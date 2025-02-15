@@ -14,10 +14,11 @@ const contactShow = () => {
     <BCollapse id="nav-collapse" isNav="true" >
       <BNavbarNav class="ms-auto" style="font-size: large">
         <BNavItem href="/"> About Me </BNavItem>
-        <BNavItem @click="contactShow()"> Contact </BNavItem>
+        <BNavItem href="/skills"> Skills </BNavItem>
         <BNavItem href="/projects"> Software Projects </BNavItem>
         <BNavItem href="/experience"> Experience </BNavItem>
         <BNavItem href="/ThreeDArt">3D Art</BNavItem>
+        <BNavItem @click="contactShow()"> Contact </BNavItem>
         <BNavItem href="">Resume</BNavItem>
       </BNavbarNav>
     </BCollapse>

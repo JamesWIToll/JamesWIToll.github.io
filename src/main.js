@@ -10,6 +10,7 @@ import AppState from "./plugins/appState.js";
 
 import App from './App.vue'
 import Home from './pages/Home.vue'
+import Skills from './pages/Skills.vue'
 
 
 const app = createApp(App);
@@ -18,6 +19,7 @@ const router  = createRouter({
     history: createWebHistory(),
     routes: [
         {path: '/', component: Home},
+        {path: '/skills', component: Skills},
     ]
 });
 

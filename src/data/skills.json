@@ -1,0 +1,28 @@
+{
+  "skillList": [
+    {
+      "category" : "Computer Languages",
+      "skills" : ["C#", "C++", "C", "Javascript", "Python", "Java", "SQL", "GLSL"]
+    },
+    {
+      "category" : "Game Engines/Frameworks/APIs",
+      "skills" : ["Unreal Engine 5", "Unity 6", "Godot 4", "Monogame", "SFML", "Opengl 4"]
+    },
+    {
+      "category" : "Web Tools/Frameworks",
+      "skills" : ["Node JS", "Express JS", "ASP.Net MVC", "Vue JS", "Knockout JS", "Bootstrap", "JQuery", "HTML", "CSS"]
+    },
+    {
+      "category" : "Databases",
+      "skills" : ["SQL Server", "Neo4j"]
+    },
+    {
+      "category" : "Software Proficiency",
+      "skills" : ["SQL Server Management Studio", "Visual Studio", "Jetbrains Clion", "Jetbrains Rider", "VS Code", "Git VCS", "Blender 3D Modeling Software", "Vim", "Cmake"]
+    },
+    {
+      "category" : "OS Proficiency",
+      "skills" : ["Windows", "Linux"]
+    }
+  ]
+}
