@@ -6,11 +6,13 @@
   align-self: center;
   font-weight: normal;
   min-width: 80%;
+  display: flex;
 }
 
-.bg-primary {
+.bg-primary{
   background-color: var(--accent-primary) !important;
 }
+
 .navbar-brand, .nav-link, .nav-item {
   color: var(--color-heading) !important;
   background-color: var(--accent-primary) !important;
@@ -40,8 +42,48 @@
   filter: drop-shadow(0px 4px 8px var(--accent-secondary));
 }
 
+.card-group {
+  margin-left: 5% !important;
+}
+
+.skill-card {
+  margin-right: 20px;
+  margin-top: 20px;
+  background: var(--accent-secondary);
+  color: var(--accent-primary);
+  min-width: 400px !important;
+  max-width: 400px !important;
+  border-radius: 15px !important;
+  opacity: 0.8;
+  filter: drop-shadow(0px 4px 4px var(--accent-secondary));
+
+}
+
+.skill  {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  border: solid 1px var(--accent-primary);
+  margin-left: 10px;
+}
+
 .emphasis {
   text-shadow: 1px 1px var(--accent-secondary);
+}
+
+.skill-card:hover {
+  text-shadow: 1px 1px var(--accent-primary);
+  box-shadow: 10px 10px var(--accent-primary);
+  filter: drop-shadow(0px 4px 4px var(--accent-primary));
+  opacity: 1;
+}
+
+.skill:hover {
+  box-shadow: 5px 5px 10px var(--accent-primary);
+}
+
+.card-text {
+  font-size: large;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -67,4 +109,12 @@
     margin-top: 10%;
   }
 
+}
+
+@media (max-width: 600px) {
+  #app {
+    margin: auto;
+    margin-top: 30%;
+  }
+  
 }

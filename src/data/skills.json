@@ -13,16 +13,16 @@
       "skills" : ["Node JS", "Express JS", "ASP.Net MVC", "Vue JS", "Knockout JS", "Bootstrap", "JQuery", "HTML", "CSS"]
     },
     {
-      "category" : "Databases",
-      "skills" : ["SQL Server", "Neo4j"]
-    },
-    {
       "category" : "Software Proficiency",
       "skills" : ["SQL Server Management Studio", "Visual Studio", "Jetbrains Clion", "Jetbrains Rider", "VS Code", "Git VCS", "Blender 3D Modeling Software", "Vim", "Cmake"]
     },
     {
       "category" : "OS Proficiency",
       "skills" : ["Windows", "Linux"]
+    },
+    {
+      "category" : "Databases",
+      "skills" : ["SQL Server", "Neo4j"]
     }
   ]
 }

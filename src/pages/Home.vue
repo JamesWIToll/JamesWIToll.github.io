@@ -9,6 +9,12 @@ img {
   filter: drop-shadow(4px 4px 5px var(--accent-secondary));
   opacity: 0.8;
 }
+img:hover {
+  max-width: 90%;
+  box-shadow: 6px 5px var(--accent-primary);
+  filter: drop-shadow(0px 4px 4px var(--accent-primary));
+  opacity: 1;
+}
 
 </style>
 
