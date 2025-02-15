@@ -1,7 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap'
 import './assets/main.css'
-import {createRouter, createWebHistory} from "vue-router";
+import {createRouter, createWebHashHistory} from "vue-router";
 import { createBootstrap } from "bootstrap-vue-next";
 import { createApp } from 'vue'
 
@@ -16,7 +16,7 @@ import Skills from './pages/Skills.vue'
 const app = createApp(App);
 
 const router  = createRouter({
-    history: createWebHistory(),
+    history: createWebHashHistory(),
     routes: [
         {path: '/', component: Home},
         {path: '/skills', component: Skills},
