@@ -1,0 +1,23 @@
+{
+  "schoolList": [
+    {
+      "degree": "Bachelor of Science in Computer Science",
+      "institution": "Western Carolina University, Cullowhee NC",
+      "graduation": "May 2022",
+      "gpa": "3.851",
+      "recognition": [
+        "Beginner Computer Science Award - 2020",
+        "Intermediate Computer Science Award - 2021",
+        "Senior Computer Science Award - 2022"
+      ],
+      "image": "/WCU_Logo.png"
+    },
+    {
+      "degree": "Associate of Science",
+      "institution": "Central Carolina Community College",
+      "graduation": "May 2019",
+      "gpa": "3.8",
+      "image": "/CCCC_Logo.png"
+    }
+  ]
+}

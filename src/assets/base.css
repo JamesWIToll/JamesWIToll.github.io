@@ -1,12 +1,12 @@
 /* color palette from <https://github.com/vuejs/theme> */
 :root {
-  --vt-c-white: #d9edef;
+  --vt-c-white: rgb(222, 239, 243);
   --vt-c-white-soft: #bfe7de;
-  --vt-c-white-mute: #99e3d5;
+  --vt-c-white-mute: rgba(222, 239, 243, 0.85);
 
   --vt-c-black: #2a252c;
   --vt-c-black-soft: #222222;
-  --vt-c-black-mute: #282828;
+  --vt-c-black-mute: rgba(42, 37, 44, 0.85);
 
   --darkgreen: #0e3b2b;
   --green: #73e8aa;

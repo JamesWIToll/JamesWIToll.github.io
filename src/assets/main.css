@@ -2,9 +2,14 @@
 
 #app {
   align-self:center;
-  margin: 0 auto auto;
+  margin: 0 auto auto auto;
   font-weight: normal;
   min-width: 100%;
+  min-height: 1000px;
+  background-image: linear-gradient(var(--color-background-mute), var(--color-background-mute)), url("/icoicon.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 70%;
 }
 
 .bg-primary{
@@ -41,19 +46,20 @@
 }
 
 .card-group {
-  margin-left: 5% !important;
+  margin-right: 10% !important;
+  margin-left: 10% !important;
 }
 
-.skill-card {
+.card {
   margin-right: 20px;
   margin-top: 20px;
-  background: var(--accent-secondary);
-  color: var(--accent-primary);
+  background: var(--accent-primary);
+  color: var(--accent-secondary);
   min-width: 300px !important;
-  max-width: 400px !important;
+  max-width: 50% !important;
   border-radius: 15px !important;
   opacity: 0.9;
-  filter: drop-shadow(0px 4px 4px var(--accent-secondary));
+  filter: drop-shadow(0px 4px 4px var(--accent-primary));
 
 }
 
@@ -61,7 +67,7 @@
   margin-top: 10px;
   margin-bottom: 10px;
   border-radius: 10px;
-  border: solid 1px var(--accent-primary);
+  border: solid 1px var(--accent-secondary);
   margin-left: 10px;
 }
 
@@ -69,19 +75,34 @@
   text-shadow: 1px 1px var(--accent-secondary);
 }
 
-.skill-card:hover {
-  text-shadow: 1px 1px var(--accent-primary);
-  box-shadow: 10px 10px var(--accent-primary);
-  filter: drop-shadow(0px 4px 4px var(--accent-primary));
+.card:hover {
+  text-shadow: 1px 1px var(--accent-secondary);
+  box-shadow: 10px 10px var(--accent-secondary);
+  filter: drop-shadow(0px 4px 4px var(--accent-secondary));
   opacity: 1;
 }
 
 .skill:hover {
-  box-shadow: 5px 5px 10px var(--accent-primary);
+  box-shadow: 5px 5px 10px var(--accent-secondary);
 }
 
 .card-text {
   font-size: large;
+}
+
+.icon {
+  max-width: 50px;
+  max-height: 50px;
+  margin-right: 10px;
+  opacity: 0.9;
+  filter: brightness(2) drop-shadow(1px 2px 2px lightblue);
+}
+
+.icon:hover {
+  max-height: 75px;
+  max-width: 75px;
+  background-color: transparent !important;
+  filter: brightness(3) drop-shadow(1px 2px 5px lightblue);
 }
 
 @media (prefers-color-scheme: dark) {

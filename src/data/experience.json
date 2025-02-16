@@ -1,20 +1,20 @@
 {
   "jobList": [
     {
-      "jobTitle": "Systems Programmer/Analyst",
+      "title": "Systems Programmer/Analyst",
       "employer": "RTI International - Research Triangle Park, NC",
       "timespan": "July 2022 - Present",
       "description" : "Developed and provided support for web based systems critical to various surveys conducted by RTI. This work involved full stack development across multiple large scale codebases and databases simultaneously.",
       "skills": ["C#", "ASP.Net", "SQL Server", "Vue", "Knockout", "MS Entity Framework", "JS", "HTML/CSS", "Visual Studio", "Git VCS", "Windows", "Communication", "Teamwork/Collaboration"],
-      "image": ""
+      "image": "/rti_logo.webp"
     },
     {
-      "jobTitle": "Computer Science Student Assistant",
+      "title": "Computer Science Student Assistant",
       "employer": "Western Carolina University",
       "timespan": "Spring 2020 - Spring 2022",
       "description" : "Worked with Computer Science professors at WCU to help make sure students understood concepts in class and were able to complete classwork. Involved reviewing code, providing feedback, and communicating core programming concepts to students.",
       "skills": ["Communication", "Collaboration", "Python", "HTML/CSS"],
-      "image": ""
+      "image": "/WCU_Logo.png"
     }
 
   ]

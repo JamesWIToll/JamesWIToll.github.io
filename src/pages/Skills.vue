@@ -11,7 +11,7 @@ const list = ref(skillList);
 
 
   <BCardGroup>
-    <BCard v-for="cat in list" :title="cat.category" class="skill-card">
+    <BCard v-for="cat in list" :title="cat.category">
       <BCardText class="row" style="padding-top: 10%;">
         <div v-for="skill in cat.skills" class="skill col-auto">
           {{ skill }}
