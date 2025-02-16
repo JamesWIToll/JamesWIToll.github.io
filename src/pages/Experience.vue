@@ -18,10 +18,10 @@ const list = ref(jobList)
 <template>
 
 
-    <BCard v-for="job in list" >
+    <BCard v-for="job in list" class="card" >
       <div class="row">
         <div class="col-sm-4"  style="align-self: center; min-width: 250px !important;">
-          <BCardImg :src="job.image" style="max-height: 300px !important; min-height: 200px !important; min-width: 200px !important;"></BCardImg>
+          <BCardImg :src="job.image" style="max-height: 400px !important; min-height: 200px !important; min-width: 200px !important;"></BCardImg>
         </div>
         <div class="col-sm-5" style="align-self: center;">
           <BCardTitle> {{ job.title}}</BCardTitle>

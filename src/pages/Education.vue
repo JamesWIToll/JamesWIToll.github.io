@@ -17,10 +17,10 @@ const list = ref(schoolList)
 
 <template>
 
-  <BCard v-for="edu in list" >
+  <BCard v-for="edu in list" class="card" >
     <div class="row">
       <div class="col-sm-4"  style="align-self: center; min-width: 250px !important;">
-        <BCardImg :src="edu.image" style="max-height: 300px !important; min-height: 200px !important; min-width: 200px !important;"></BCardImg>
+        <BCardImg :src="edu.image" style="max-height: 350px !important; min-height: 200px !important; min-width: 200px !important;"></BCardImg>
       </div>
       <div class="col-sm-5" style="align-self: center;">
         <BCardTitle> {{ edu.degree}}</BCardTitle>
