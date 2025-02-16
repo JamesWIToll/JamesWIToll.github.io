@@ -7,9 +7,9 @@
   min-width: 100%;
   min-height: 1000px;
   background-image: linear-gradient(var(--color-background-mute), var(--color-background-mute)), url("/icoicon.png");
-  background-repeat: no-repeat;
+  background-repeat: repeat-y;
   background-position: center;
-  background-size: 70%;
+  background-size: 110%;
 }
 
 .bg-primary{
@@ -22,6 +22,7 @@
 }
 
 .nav-link:hover {
+  font-size: x-large;
   text-shadow: 1px 1px var(--accent-secondary);
 }
 
@@ -105,9 +106,18 @@
   filter: brightness(3) drop-shadow(1px 2px 5px lightblue);
 }
 
+.contrast:hover {
+  scale: 1.2 !important;
+  filter: drop-shadow(0px 4px 4px var(--accent-secondary)) !important;
+}
+
 @media (prefers-color-scheme: dark) {
-  .navbar-toggler-icon {
-    filter: invert(1);
+  .contrast {
+    filter: invert(1) !important;
+  }
+
+  .contrast:hover {
+    filter: invert(1) drop-shadow(0px 4px 4px var(--accent-secondary)) !important;
   }
 }
 
@@ -118,11 +128,21 @@
 }
 
 @media (min-width: 1024px) {
+  #app {
+    background-size: 80%;
+  }
+
   body {
     display: flex;
     place-items: center;
   }
 
+}
+
+@media (max-width: 650px) {
+  #app {
+    background-size: 200%;
+  }
 }
 
 

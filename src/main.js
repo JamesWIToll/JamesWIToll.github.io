@@ -14,6 +14,8 @@ import Skills from './components/Skills.vue'
 import Experience from "@/components/Experience.vue";
 import Education from "@/components/Education.vue";
 import Projects from "@/components/Projects.vue"
+import Contact from "@/components/Contact.vue";
+import Art from "@/components/Art.vue"
 
 const app = createApp(App);
 
@@ -25,6 +27,8 @@ const router  = createRouter({
         {path: '/experience', component: Experience},
         {path: '/education', component: Education},
         {path: '/projects', component: Projects},
+        {path: '/contact', component: Contact},
+        {path: '/art', component: Art},
     ]
 });
 

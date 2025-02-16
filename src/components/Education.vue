@@ -34,7 +34,7 @@ const list = ref(schoolList)
         <div v-if="edu.recognition"><br/>
           <h5>Recognition:</h5>
           <div v-for="award in edu.recognition" class="row">
-            <div class="skill col-auto" > {{award}}</div>
+            <div class="skill col-auto" style="max-width: 80%; min-width: 150px;" > {{award}}</div>
           </div>
         </div>
       </div>

@@ -35,7 +35,6 @@ const list = ref(projectList);
           <div class="skill col-auto" > {{skill}}</div>
         </div>
       </div>
-
     </div>
   </BCard>
 

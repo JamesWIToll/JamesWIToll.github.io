@@ -1,0 +1,28 @@
+{
+  "contactList": [
+    {
+      "link": "https://www.linkedin.com/in/james-tolliver-458119191",
+      "icon": "/linkedIn.png",
+      "desc": "LinkedIn page",
+      "display": "www.linkedin.com/in/james-tolliver-458119191"
+    },
+    {
+      "link": "mailto:james.w.tolliver@gmail.com",
+      "icon": "/mail.svg",
+      "desc": "Email",
+      "display": "james.w.tolliver@gmail.com"
+    },
+    {
+      "link": "https://github.com/JamesWIToll",
+      "icon": "/github.png",
+      "desc": "Github",
+      "display": "https://github.com/JamesWIToll"
+    },
+    {
+      "link": "tel:+19193562672",
+      "icon": "/phone.svg",
+      "desc": "Phone",
+      "display": "(919)-356-2672"
+    }
+  ]
+}

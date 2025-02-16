@@ -1,4 +1,5 @@
 <script setup>
+import Contact from "@/components/Contact.vue";
 </script>
 
 <style scoped>
@@ -22,7 +23,7 @@ img:hover {
     <div class="row" >
       <div class="col-md-5" style="text-align: center;">
         <h3 class="emphasis">Hi, I'm Wesley</h3> <br/><br/>
-        <img src="../../public/me.jpeg" alt="picture of me">
+        <img src="/me.jpeg" alt="picture of me">
       </div>
       <div class="col-md-7" style="align-self: center;">
 
@@ -34,8 +35,11 @@ img:hover {
           interface with components more directly, I am dedicated to mastering
           anything required.
         </h4>
+
+        <Contact/>
       </div>
     </div>
 
   </div>
+
 </template>

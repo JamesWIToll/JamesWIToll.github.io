@@ -1,10 +1,5 @@
 <script setup>
 import {BNavbar, BNavbarNav, BNavItem, BCollapse, BNavbarToggle, BNavbarBrand} from "bootstrap-vue-next/components";
-
-const contactShow = () => {
-  alert("contact info lol")
-}
-
 </script>
 
 <style scoped>
@@ -16,7 +11,7 @@ const contactShow = () => {
     <BNavbarBrand>
       <h4 class="emphasis">James Wesley Tolliver </h4> <h5>Systems Programmer</h5>
     </BNavbarBrand>
-    <BNavbarToggle target="nav-collapse" class="ms-auto" href="/"/>
+    <BNavbarToggle target="nav-collapse" class="ms-auto contrast" href="/"/>
     <BCollapse id="nav-collapse" isNav="true" >
       <BNavbarNav class="ms-auto" style="font-size: large">
         <BNavItem href="/"> About Me </BNavItem>
@@ -24,9 +19,9 @@ const contactShow = () => {
         <BNavItem href="/#projects"> Projects </BNavItem>
         <BNavItem href="/#education"> Education </BNavItem>
         <BNavItem href="/#experience"> Experience </BNavItem>
-        <BNavItem href="/#Art">Art</BNavItem>
-        <BNavItem @click="contactShow()"> Contact </BNavItem>
-        <BNavItem href="">Resume</BNavItem>
+        <BNavItem href="/#art">Art</BNavItem>
+        <BNavItem href="/#contact"> Contact </BNavItem>
+        <BNavItem href="/resume.pdf">Resume</BNavItem>
       </BNavbarNav>
     </BCollapse>
   </BNavbar>
@@ -35,5 +30,10 @@ const contactShow = () => {
   <div class="container-fluid" style="margin-top: 2%;">
     <RouterView/>
   </div>
+
+
+
+
+
 
 </template>
