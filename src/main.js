@@ -9,11 +9,11 @@ import AppState from "./plugins/appState.js";
 
 
 import App from './App.vue'
-import Home from './pages/Home.vue'
-import Skills from './pages/Skills.vue'
-import Experience from "@/pages/Experience.vue";
-import Education from "@/pages/Education.vue";
-
+import Home from './components/Home.vue'
+import Skills from './components/Skills.vue'
+import Experience from "@/components/Experience.vue";
+import Education from "@/components/Education.vue";
+import Projects from "@/components/Projects.vue"
 
 const app = createApp(App);
 
@@ -24,6 +24,7 @@ const router  = createRouter({
         {path: '/skills', component: Skills},
         {path: '/experience', component: Experience},
         {path: '/education', component: Education},
+        {path: '/projects', component: Projects},
     ]
 });
 

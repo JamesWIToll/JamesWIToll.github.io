@@ -38,7 +38,6 @@ const list = ref(jobList)
         </div>
 
       </div>
-
     </BCard>
 
 

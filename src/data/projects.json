@@ -1,0 +1,23 @@
+{
+  "projectList": [
+    {
+      "title": "Bubble League",
+      "group": "Triangle Interactive Arts Council - Global Game Jam 2025",
+      "timespan": "Jan 2025",
+      "link": "https://armandpreschutti.itch.io/bubble-league",
+      "description" : "Helped develop bubble league as a Jam game for the Global Game Jam 2025. Helped work on many of the physics and core game systems. It's a super fun local coop game, you should try it if you get a chance.",
+      "skills": ["Collaboration", "Unity Game Engine", "C#", "Rider"],
+      "image": "/bubble_league.png"
+    },
+    {
+      "title": "RevvEngine",
+      "group": "Sole Developer",
+      "timespan": "Jan 2025 - present",
+      "link": "https://github.com/JamesWIToll/RevvEngine",
+      "description" : "A work in progress 3D racing game engine that I am using to document and show off my process learning the OpenGL 4.6 API. Right now I am working purely on the 3D asset import to rendering pipeline. I have plans to create an editor and possibly integrate a game logic scripting system much later on. ",
+      "skills": ["C++", "OpenGL", "SFML", "Clion", "Cmake"],
+      "image": "/revvengine.png"
+    }
+
+  ]
+}
