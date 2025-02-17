@@ -5,9 +5,18 @@
       "group": "Triangle Interactive Arts Council - Global Game Jam 2025",
       "timespan": "Jan 2025",
       "link": "https://armandpreschutti.itch.io/bubble-league",
-      "description" : "Helped develop bubble league as a Jam game for the Global Game Jam 2025. Helped work on many of the physics and core game systems. It's a super fun local coop game, you should try it if you get a chance.",
+      "description" : "A local coop game answering the question: What if Rocket League was a 2D game with penguins instead of cars? Collaborated with members of the Triangle Interactive Arts Council to develop Bubble League for the Global Game Jam 2025. Worked on much of the core physics and player controls. In just a few days, we developed a solid fun little game.",
       "skills": ["Collaboration", "Unity Game Engine", "C#", "Rider"],
       "image": "/bubble_league.png"
+    },
+    {
+      "title": "GLEngine",
+      "group": "Sole Developer",
+      "timespan": "Nov 2024 - present",
+      "link": "https://github.com/JamesWIToll/GLEngine",
+      "description" : "A simple 3D rendering engine that documents my early progress learning the OpenGL 4.6 API. It includes 3D rendering of primitives such as cubes and spheres with textures, simple phong lighting, programmatic UV- and Ico-sphere vertex and texture coordinate generation, and a look-around camera.",
+      "skills": ["C++", "OpenGL", "GLSL", "SFML", "Clion", "Cmake", "Linear Algebra"],
+      "image": "/glengine.png"
     },
     {
       "title": "RevvEngine",
@@ -15,8 +24,17 @@
       "timespan": "Jan 2025 - present",
       "link": "https://github.com/JamesWIToll/RevvEngine",
       "description" : "A work in progress 3D racing game engine that I am using to document and show off my process learning the OpenGL 4.6 API. Right now I am working purely on the 3D asset import to rendering pipeline. I have plans to create an editor and possibly integrate a game logic scripting system much later on. ",
-      "skills": ["C++", "OpenGL", "SFML", "Clion", "Cmake"],
+      "skills": ["C++", "OpenGL", "GLSL", "SFML", "Clion", "Cmake"],
       "image": "/revvengine.png"
+    },
+    {
+      "title": "TestFantasyGame",
+      "group": "Sole Developer",
+      "timespan": "July 2024",
+      "link": "https://github.com/JamesWIToll/MonoGame_TestFantasyGame",
+      "description": "A simple 2D tech demo using the MonoGame framework. It includes a basic perlin noise world generation algorithm with a tiled world-map, basic character movement, and simple combat with Orc enemies that follow the player.",
+      "skills": ["C#", "MonoGame", "VS Code"],
+      "image": "/testfantasygame.png"
     }
 
   ]
