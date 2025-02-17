@@ -5,9 +5,6 @@ import {ref} from "vue";
 const list = ref(contactList);
 </script>
 
-<style scoped>
-
-</style>
 
 <template>
 

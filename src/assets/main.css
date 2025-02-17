@@ -84,7 +84,7 @@
 }
 
 .skill:hover {
-  box-shadow: 5px 5px 10px var(--accent-secondary);
+  box-shadow: 5px 5px 2px var(--accent-secondary);
 }
 
 .card-text {
@@ -108,7 +108,7 @@
 
 .contrast:hover {
   scale: 1.2 !important;
-  filter: drop-shadow(0px 4px 4px var(--accent-secondary)) !important;
+  filter: drop-shadow(1px 2px 1px var(--accent-secondary)) !important;
 }
 
 @media (prefers-color-scheme: dark) {
