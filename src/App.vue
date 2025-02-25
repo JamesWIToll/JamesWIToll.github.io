@@ -12,7 +12,7 @@ import {BNavbar, BNavbarNav, BNavItem, BCollapse, BNavbarToggle, BNavbarBrand} f
       <h4 class="emphasis">James Wesley Tolliver </h4> <h5>Systems Programmer</h5>
     </BNavbarBrand>
     <BNavbarToggle target="nav-collapse" class="ms-auto contrast" href="/"/>
-    <BCollapse id="nav-collapse" isNav="true" >
+    <BCollapse id="nav-collapse" isNav >
       <BNavbarNav class="ms-auto" style="font-size: large">
         <BNavItem href="/"> About Me </BNavItem>
         <BNavItem href="/#skills"> Skills </BNavItem>

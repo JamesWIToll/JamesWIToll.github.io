@@ -1,5 +1,6 @@
 <script setup>
 import Contact from "@/components/Contact.vue";
+import RenderWindow from "@/components/RenderWindow.vue";
 </script>
 
 <style scoped>

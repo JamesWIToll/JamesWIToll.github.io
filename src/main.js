@@ -5,7 +5,6 @@ import {createRouter, createWebHashHistory} from "vue-router";
 import { createBootstrap } from "bootstrap-vue-next";
 import { createApp } from 'vue'
 
-import AppState from "./plugins/appState.js";
 
 
 import App from './App.vue'
@@ -34,8 +33,6 @@ const router  = createRouter({
 
 const bootstrap = createBootstrap();
 
-
-app.use(AppState);
 app.use(router);
 app.use(bootstrap);
 app.mount('#app')
