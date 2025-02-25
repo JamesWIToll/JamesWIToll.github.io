@@ -5,10 +5,50 @@
     <link rel="icon" href="/icoicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>James Tolliver Systems Programmer</title>
-    <script type="module" crossorigin src="/assets/index-BRBNUUGP.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-yw2fCJpT.css">
+    <script type="module" crossorigin src="/assets/index-SA0p8bDT.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-CyjwI9HR.css">
   </head>
   <body style="min-height:100%;">
     <div id="app"></div>
+
+    <script type="x-shader/x-fragment" id="vertexShader">
+        #version 300 es
+        precision mediump float;
+
+        layout (location = 0) in vec3 aPos;
+        layout (location = 1) in vec4 aColor;
+        layout (location = 2) in vec3 aNormal;
+        layout (location = 3) in vec2 aTex;
+
+        uniform mat4 uModel;
+        uniform mat4 uView;
+        uniform mat4 uProjection;
+
+        out vec2 TexCoord;
+        out vec3 Normal;
+        out vec4 Color;
+
+        void main() {
+                gl_Position = uProjection * uView * uModel * vec4(aPos, 1.0f);
+            TexCoord = aTex;
+            Normal = aNormal;
+            Color =  aColor;
+        }
+    </script>
+
+    <script type="x-shader/x-fragment" id="fragmentShader">
+        #version 300 es
+        precision mediump float;
+        out vec4 FragColor;
+
+
+        in vec2 TexCoord;
+        in vec3 Normal;
+        in vec4 Color;
+
+        void main() {
+            FragColor = Color;
+        }
+    </script>
   </body>
 </html>
