@@ -28,7 +28,7 @@
         out vec4 Color;
 
         void main() {
-                gl_Position = uProjection * uView * uModel * vec4(aPos, 1.0f);
+            gl_Position = uProjection * uView * uModel * vec4(aPos, 1.0f);
             TexCoord = aTex;
             Normal = aNormal;
             Color =  aColor;
@@ -46,7 +46,7 @@
         in vec4 Color;
 
         void main() {
-            FragColor = Color;
+            FragColor = vec4(Normal, 1);
         }
     </script>
   </body>

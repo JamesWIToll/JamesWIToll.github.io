@@ -1,9 +1,11 @@
+import {Camera} from "@/models/RenderObjs.js";
 
 export class Renderer {
     constructor(_gl) {
         this.gl = _gl;
         this.shaderProg = null;
         this.currScene = null;
+        this.camera = new Camera();
 
 
         if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
@@ -22,9 +24,20 @@ export class Renderer {
             this.currScene = currentScene;
         }
 
+        this.setCurrentCamera = (camera) => {
+            this.camera = camera;
+        }
+
         this.render = () => {
             this.shaderProg.use();
             this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
+            this.gl.enable(this.gl.DEPTH_TEST);
+
+            let viewport = this.gl.getParameter(this.gl.VIEWPORT);
+            let width = viewport[2];
+            let height = viewport[3];
+            this.shaderProg.setMat4("uView", this.camera.getViewMatrix())
+            this.shaderProg.setMat4("uProjection", this.camera.getProjectionMatrix(width, height));
 
             this.currScene.render(this.shaderProg);
             
