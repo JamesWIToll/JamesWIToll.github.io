@@ -1,4 +1,4 @@
-import {glMatrix, mat4, quat, vec2, vec3, vec4} from "gl-matrix";
+import {glMatrix, mat4, quat, vec3, vec4} from "gl-matrix";
 
 export class Node {
     constructor() {
