@@ -114,7 +114,7 @@ img {
       <div class="row" @mouseup="axisToRotate=null" @touchend="axisToRotate=null">
         <img src="/arrowUp.png" class="contrast col-md-3" @mousedown="axisToRotate = 'X';" @touchstart="axisToRotate = 'X';"  alt="arrow-up"/>
         <img src="/arrowDown.png" class="contrast col-md-3" @mousedown="axisToRotate = '-X';" @touchstart="axisToRotate = '-X';" alt="arrow-down"/>
-        <img src="/arrowLeft.png" class="contrast col-md-3" @mousedown="axisToRotate = '-Y';" @touchstart="axisToRotate = '-Y';" alt="arrow-left"/> />
+        <img src="/arrowLeft.png" class="contrast col-md-3" @mousedown="axisToRotate = '-Y';" @touchstart="axisToRotate = '-Y';" alt="arrow-left"/>
         <img src="/arrowRight.png" class="contrast col-md-3" @mousedown="axisToRotate = 'Y';" @touchstart="axisToRotate = 'Y';" alt="arrow-right"/>
       </div>
       <div class="row" style="margin-top: 50px;">
