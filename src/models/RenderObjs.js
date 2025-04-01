@@ -148,7 +148,7 @@ export class Camera extends Node {
 
         this.getProjectionMatrix = (height, width) => {
             let projection = mat4.create();
-            return mat4.perspective(projection, glMatrix.toRadian(this.FOV), height/width, 0.01, 100);
+            return mat4.perspective(projection, glMatrix.toRadian(this.FOV), height/width, 0.1, 100);
         }
     }
 }
