@@ -24,6 +24,12 @@ export class Node {
             this._transform.rotation = quat.fromValues(x, y, z, w);
         }
 
+        this.getRotationAngleAxis = () => {
+            let angles = vec3.create();
+            quat.getAxisAngle(angles,this._transform.rotation);
+            return angles;
+        }
+
         this.setRotationFromAngleAxis = (degrees, axis) => {
             this._transform.rotation = quat.create();
             quat.setAxisAngle(this._transform.rotation, axis, glMatrix.toRadian(degrees));
@@ -33,14 +39,16 @@ export class Node {
             this._transform.scale = vec3.fromValues(x, y, z);
         }
 
-        this.addRotation = (axis_str, degrees) => {
-            if (axis_str === 'x' || axis_str === 'X') {
-                quat.rotateX(this._transform.rotation, this._transform.rotation, glMatrix.toRadian(degrees));
-            } else if (axis_str === 'y' || axis_str === 'Y') {
-                quat.rotateY(this._transform.rotation, this._transform.rotation, glMatrix.toRadian(degrees));
-            } else if (axis_str === 'z' || axis_str === 'Z') {
-                quat.rotateZ(this._transform.rotation, this._transform.rotation, glMatrix.toRadian(degrees));
-            }
+        this.addRotation = (degreesX, degreesY, degreesZ) => {
+            let angles = this.getRotationAngleAxis();
+            let angleX = glMatrix.toRadian((degreesX+angles[0]));
+            let angleY = glMatrix.toRadian((degreesY+angles[1]));
+            let angleZ = glMatrix.toRadian((degreesZ+angles[2]));
+            quat.fromEuler(this._transform.rotation, angleX, angleY, angleZ);
+        }
+
+        this.move = (x, y, z) => {
+            vec3.add(this._transform.position, this._transform.position, vec3.fromValues(x, y, z));
         }
 
         this.addChild = (obj) => {

@@ -11,27 +11,78 @@ const canvas = ref(null);
 const renderer = ref(null);
 const scene = ref(null);
 const loaded = ref(false);
-
-const axisToRotate = ref(null);
-const rotationDegrees = ref(5);
-
 let gl = null;
 
-const update = () => {
-  if (axisToRotate.value && rotationDegrees.value) {
-    let axis = axisToRotate.value;
-    let deg = rotationDegrees.value;
-    if (axis.includes('-')){
-      axis = axis.substring(1);
-      deg = -deg;
-    }
 
-    scene.value.addRotation(axis, deg);
+
+let lastX = 0;
+let lastY = 0;
+let sceneRotate = vec3.create();
+const axisToMove = ref("");
+const moveAmt = 0.5;
+
+const update = () => {
+  switch (axisToMove.value.toLowerCase()) {
+    case "x":
+      scene.value.move(moveAmt, 0, 0);
+      break;
+    case "y":
+      scene.value.move(0, moveAmt, 0);
+      break;
+    case "-x":
+      scene.value.move(-moveAmt, 0, 0);
+      break;
+    case "-y":
+      scene.value.move(0, -moveAmt, 0);
+      break;
   }
+
+  scene.value.addRotation(sceneRotate[0], sceneRotate[1], sceneRotate[2]);
 
   renderer.value.render();
 
   requestAnimationFrame(update);
+}
+
+
+const captured = ref(false);
+
+const capture = async (event) => {
+  if (event.type === "touchstart") {
+    lastX = event.changedTouches[0].clientX;
+    lastY = event.changedTouches[0].clientY;
+  }else {
+    lastX = event.clientX;
+    lastY = event.clientY;
+  }
+  captured.value = true;
+}
+
+const release = async (event) => {
+  captured.value = false;
+}
+const rotateScene = async (event) => {
+  event.preventDefault();
+
+  if (captured.value){
+    let currX = lastX;
+    let currY = lastY;
+    if (event.type == "touchmove"){
+      currX = event.changedTouches[0].clientX;
+      currY = event.changedTouches[0].clientY;
+    } else {
+      currX = event.clientX;
+      currY = event.clientY;
+    }
+
+    let deltaX = currX - lastX;
+    let deltaY = currY - lastY;
+
+    vec3.add(sceneRotate, sceneRotate, vec3.fromValues(-deltaY*45, deltaX*45, 0));
+
+    lastX = event.clientX;
+    lastY = event.clientY;
+  }
 }
 
 
@@ -108,14 +159,20 @@ img {
   <div class="row mx-auto canvasContainer">
     <h3 v-if="!loaded">Loading...</h3>
     <div class="col-md-8" id="canvasBox">
-      <canvas ref="canvas"></canvas>
+      <canvas ref="canvas" @mousedown="capture"
+                            @touchstart="capture"
+                            @touchend="capture"
+                            @mouseup="release"
+                            @mousemove="rotateScene"
+                            @touchmove="rotateScene">
+      </canvas>
     </div>
     <div class="col-md-4">
-      <div class="row" @mouseup="axisToRotate=null" @touchend="axisToRotate=null">
-        <img src="/arrowUp.png" class="contrast col-md-3" @mousedown="axisToRotate = 'X';" @touchstart="axisToRotate = 'X';"  alt="arrow-up"/>
-        <img src="/arrowDown.png" class="contrast col-md-3" @mousedown="axisToRotate = '-X';" @touchstart="axisToRotate = '-X';" alt="arrow-down"/>
-        <img src="/arrowLeft.png" class="contrast col-md-3" @mousedown="axisToRotate = '-Y';" @touchstart="axisToRotate = '-Y';" alt="arrow-left"/>
-        <img src="/arrowRight.png" class="contrast col-md-3" @mousedown="axisToRotate = 'Y';" @touchstart="axisToRotate = 'Y';" alt="arrow-right"/>
+      <div class="row" @mouseup="axisToMove=''" @touchend="axisToMove=''">
+        <img src="/arrowUp.png" class="contrast col-md-3" @mousedown="axisToMove = 'Y';" @touchstart="axisToMove = 'Y';"  alt="arrow-up"/>
+        <img src="/arrowDown.png" class="contrast col-md-3" @mousedown="axisToMove = '-Y';" @touchstart="axisToMove = '-Y';" alt="arrow-down"/>
+        <img src="/arrowLeft.png" class="contrast col-md-3" @mousedown="axisToMove = 'X';" @touchstart="axisToMove = 'X';" alt="arrow-left"/>
+        <img src="/arrowRight.png" class="contrast col-md-3" @mousedown="axisToMove = '-X';" @touchstart="axisToMove = '-X';" alt="arrow-right"/>
       </div>
       <div class="row" style="margin-top: 50px;">
         <img src="/ZoomPlus.png" class="contrast col-md-4" @click="renderer.camera.zoom(-5)" alt="zoom-plus"/>
