@@ -106,9 +106,9 @@ img {
 <template>
 
   <div class="row mx-auto canvasContainer">
+    <h3 v-if="!loaded">Loading...</h3>
     <div class="col-md-8" id="canvasBox">
-      <canvas ref="canvas" v-show="loaded"></canvas>
-      <h3 v-show="!loaded">Loading...</h3>
+      <canvas ref="canvas"></canvas>
     </div>
     <div class="col-md-4">
       <div class="row" @mouseup="axisToRotate=null" @touchend="axisToRotate=null">
