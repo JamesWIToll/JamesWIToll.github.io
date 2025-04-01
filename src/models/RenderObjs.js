@@ -33,6 +33,16 @@ export class Node {
             this._transform.scale = vec3.fromValues(x, y, z);
         }
 
+        this.addRotation = (axis_str, degrees) => {
+            if (axis_str === 'x' || axis_str === 'X') {
+                quat.rotateX(this._transform.rotation, this._transform.rotation, glMatrix.toRadian(degrees));
+            } else if (axis_str === 'y' || axis_str === 'Y') {
+                quat.rotateY(this._transform.rotation, this._transform.rotation, glMatrix.toRadian(degrees));
+            } else if (axis_str === 'z' || axis_str === 'Z') {
+                quat.rotateZ(this._transform.rotation, this._transform.rotation, glMatrix.toRadian(degrees));
+            }
+        }
+
         this.addChild = (obj) => {
             obj.parent = this;
             this._children.push(obj);
@@ -138,7 +148,7 @@ export class Camera extends Node {
 
         this.getProjectionMatrix = (height, width) => {
             let projection = mat4.create();
-            return mat4.perspective(projection, glMatrix.toRadian(this.FOV), width/height, 0.01, 100);
+            return mat4.perspective(projection, glMatrix.toRadian(this.FOV), height/width, 0.01, 100);
         }
     }
 }
@@ -174,18 +184,23 @@ export class RenderObj extends Node {
             positions: [],
             normals: [],
             colors: [],
-            texCoords: []
+            texCoordsLists : [ ]
         }
         this._indices = [];
         this.gl = _gl;
         this.POSBufferObj = null;
         this.NORMBufferObj = null;
         this.COLBufferObj = null;
-        this.TEXCBufferObj = null;
-        this.VBO = null;
+        this.TEXCBufferObjs = [];
         this.EBO = null;
         this.VAO = null;
         this.primitiveMode = primMode;
+        this.material = {
+            "pbrMetallicRoughness": {
+                "baseColorTexture": null,
+                "baseColorFactor": vec4.fromValues(0.9,0.8,0.2,1.0)
+            }
+        };
 
 
 
@@ -194,10 +209,10 @@ export class RenderObj extends Node {
             this.POSBufferObj = this.gl.createBuffer();
             this.NORMBufferObj = this.gl.createBuffer();
             this.COLBufferObj = this.gl.createBuffer();
-            this.TEXCBufferObj = this.gl.createBuffer();
             this.EBO = this.gl.createBuffer();
 
             this.gl.bindVertexArray(this.VAO);
+
 
             this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.POSBufferObj);
             this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(this._vertices.positions), this.gl.STATIC_DRAW);
@@ -214,22 +229,34 @@ export class RenderObj extends Node {
             this.gl.vertexAttribPointer(2, 3, this.gl.FLOAT, false, 0, 0);
             this.gl.enableVertexAttribArray(2);
 
-            this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.TEXCBufferObj);
-            this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(this._vertices.texCoords), this.gl.STATIC_DRAW);
-            this.gl.vertexAttribPointer(3, 2, this.gl.FLOAT, false, 0, 0);
-            this.gl.enableVertexAttribArray(3);
+            this.TEXCBufferObjs = [];
+            for (let i = 0; i < 5 && i < this._vertices.texCoordsLists.length; i++) {
 
+                this.TEXCBufferObjs.push( this.gl.createBuffer() );
+                this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.TEXCBufferObjs[i]);
+                this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(this._vertices.texCoordsLists[i]), this.gl.STATIC_DRAW);
+                this.gl.vertexAttribPointer(3+i, 2, this.gl.FLOAT, false, 0, 0);
+                this.gl.enableVertexAttribArray(3+i);
+
+            }
 
             this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.EBO);
             this.gl.bufferData(this.gl.ELEMENT_ARRAY_BUFFER, new Uint32Array(this._indices), this.gl.STATIC_DRAW);
 
             this.gl.bindVertexArray(null);
+
         }
 
         this.render = (shader) => {
-
             let model = this.getModelMatrix();
             shader.setMat4("uModel", model);
+            shader.setVec4("uBaseColor", this.material.pbrMetallicRoughness.baseColorFactor)
+
+            if (this.material.pbrMetallicRoughness.baseColorTexture != null) {
+                this.gl.activeTexture(0);
+                this.gl.bindTexture(this.gl.TEXTURE_2D, this.material.pbrMetallicRoughness.baseColorTexture.texture);
+                shader.setBoolOrInt("uBaseTexture", 0)
+            }
 
             this.gl.bindVertexArray(this.VAO);
             this.gl.drawElements(this.primitiveMode, this._indices.length, this.gl.UNSIGNED_INT, 0)

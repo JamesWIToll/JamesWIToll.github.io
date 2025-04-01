@@ -10,66 +10,36 @@ const props = defineProps({model: String});
 const canvas = ref(null);
 const renderer = ref(null);
 const scene = ref(null);
-const focused = ref(false);
+
+const axisToRotate = ref(null);
+const rotationDegrees = ref(5);
+
 let gl = null;
 
-const focus = (obj) => {
-  focused.value = !focused.value;
-  if (focused.value) {
-    obj.target.requestPointerLock();
-    document.body.classList.add("overflow-y-hidden")
-  } else {
-    document.exitPointerLock();
-    document.body.classList.remove("overflow-y-hidden")
+const update = () => {
+  if (axisToRotate.value && rotationDegrees.value) {
+    let axis = axisToRotate.value;
+    let deg = rotationDegrees.value;
+    if (axis.includes('-')){
+      axis = axis.substring(1);
+      deg = -deg;
+    }
+
+    scene.value.addRotation(axis, deg);
   }
+
+  renderer.value.render();
+
+  requestAnimationFrame(update);
 }
 
-const move_amt = 0.1;
-const mouse_sensitivity = 0.1;
 
-window.addEventListener("pointerlockchange", (e) => {
-  if(document.pointerLockElement == null){
-    document.body.classList.remove("overflow-y-hidden");
-    focused.value = false;
-  }
-});
+window.onresize = () => {
+  let bb = document.querySelector ('#canvasBox').getBoundingClientRect();
+  gl.canvas.width = bb.width;
+  gl.canvas.height = bb.height;
+}
 
-window.addEventListener("keydown", (e) => {
-  if (document.pointerLockElement !== null) {
-    if (e.key === "D" || e.key === "d") {
-      renderer.value.camera.move("left", move_amt);
-    }
-    if (e.key === "A" || e.key === "a") {
-      renderer.value.camera.move("right", move_amt);
-    }
-    if (e.key === "W" || e.key === "w") {
-      renderer.value.camera.move("forward", move_amt);
-    }
-    if (e.key === "S" || e.key === "s") {
-      renderer.value.camera.move("backward", move_amt);
-    }
-
-    if (e.key === "E" || e.key === "e") {
-      renderer.value.camera.move("up", move_amt);
-    }
-    if (e.key === "Q" || e.key === "q") {
-      renderer.value.camera.move("down", move_amt);
-    }
-  }
-});
-
-window.addEventListener("mousemove", (e) => {
-  if(document.pointerLockElement !== null) {
-    renderer.value.camera.look("horizontal", mouse_sensitivity*e.movementX);
-    renderer.value.camera.look("vertical", -mouse_sensitivity*e.movementY);
-  }
-});
-
-window.addEventListener("wheel", (e) => {
-  if (document.pointerLockElement !== null) {
-    renderer.value.camera.zoom(e.deltaY*mouse_sensitivity);
-  }
-})
 
 onMounted(async () => {
   gl = canvas.value.getContext('webgl2');
@@ -77,6 +47,11 @@ onMounted(async () => {
     alert("WebGL2 not supported!");
     return;
   }
+
+
+  let bb = document.querySelector ('#canvasBox').getBoundingClientRect();
+  gl.canvas.width = bb.width;
+  gl.canvas.height = bb.height;
 
   let vertSrc = document.getElementById("vertexShader").innerText;
   let fragSrc = document.getElementById("fragmentShader").innerText;
@@ -91,28 +66,55 @@ onMounted(async () => {
   renderer.value = new Renderer(gl);
   renderer.value.setShaderProgram(prog);
 
-
-  scene.value = (await importer.importGLTF2("fiat", gl));
-  scene.value._transform.position = vec3.fromValues(0,0,50);
+  scene.value = (await importer.importGLTF2(props.model, gl));
+  scene.value._transform.position = vec3.fromValues(0,-2,20);
 
   renderer.value.setCurrentScene(scene.value);
-  requestAnimationFrame(renderer.value.render);
+  requestAnimationFrame(update);
 
 });
 </script>
 
 <style scoped>
 
+.canvasContainer {
+  border-radius: 50px;
+  width: 80%;
+  min-height: 500px;
+  background-color: var(--accent-primary);
+  padding: 50px;
+}
+
 canvas {
-  min-height: 300px;
-  border-radius: 10px;
-  margin: 10px;
+  width: 100%;
+  height: 100%;
+  min-height: 500px;
+}
+
+img {
+  width : 70px;
 }
 
 </style>
 
-<template style="align-content: center;">
+<template>
 
-  <canvas ref="canvas" @click="focus"></canvas>
+  <div class="row mx-auto canvasContainer">
+    <div class="col-md-8" id="canvasBox">
+      <canvas ref="canvas"></canvas>
+    </div>
+    <div class="col-md-4">
+      <div class="row" @mouseup="axisToRotate=null">
+        <img src="/arrowUp.png" class="contrast col-md-3" @mousedown="axisToRotate = 'X';" />
+        <img src="/arrowDown.png" class="contrast col-md-3" @mousedown="axisToRotate = '-X';"/>
+        <img src="/arrowLeft.png" class="contrast col-md-3" @mousedown="axisToRotate = '-Y';" />
+        <img src="/arrowRight.png" class="contrast col-md-3" @mousedown="axisToRotate = 'Y';" />
+      </div>
+      <div class="row" style="margin-top: 50px;">
+        <img src="/ZoomPlus.png" class="contrast col-md-4" @click="renderer.camera.zoom(-5)"/>
+        <img src="/ZoomMinus.png" class="contrast col-md-4" @click="renderer.camera.zoom(5)"/>
+      </div>
+    </div>
+  </div>
 
 </template>

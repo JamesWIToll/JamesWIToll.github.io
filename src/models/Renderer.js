@@ -32,16 +32,11 @@ export class Renderer {
             this.shaderProg.use();
             this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
             this.gl.enable(this.gl.DEPTH_TEST);
-
-            let viewport = this.gl.getParameter(this.gl.VIEWPORT);
-            let width = viewport[2];
-            let height = viewport[3];
+            this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
             this.shaderProg.setMat4("uView", this.camera.getViewMatrix())
-            this.shaderProg.setMat4("uProjection", this.camera.getProjectionMatrix(width, height));
+            this.shaderProg.setMat4("uProjection", this.camera.getProjectionMatrix(this.gl.canvas.width, this.gl.canvas.height));
 
             this.currScene.render(this.shaderProg);
-            
-            requestAnimationFrame(this.render);
         }
     }
 

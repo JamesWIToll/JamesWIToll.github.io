@@ -17,19 +17,23 @@
         layout (location = 0) in vec3 aPos;
         layout (location = 1) in vec4 aColor;
         layout (location = 2) in vec3 aNormal;
-        layout (location = 3) in vec2 aTex;
+        layout (location = 3) in vec2 aTex0;
+        layout (location = 4) in vec2 aTex1;
+        layout (location = 5) in vec2 aTex2;
+        layout (location = 6) in vec2 aTex3;
+        layout (location = 7) in vec2 aTex4;
 
         uniform mat4 uModel;
         uniform mat4 uView;
         uniform mat4 uProjection;
 
-        out vec2 TexCoord;
+        out vec2[5] TexCoords;
         out vec3 Normal;
         out vec4 Color;
 
         void main() {
             gl_Position = uProjection * uView * uModel * vec4(aPos, 1.0f);
-            TexCoord = aTex;
+            TexCoords =  vec2[](aTex0, aTex1, aTex2, aTex3, aTex4);
             Normal = aNormal;
             Color =  aColor;
         }
@@ -40,13 +44,16 @@
         precision mediump float;
         out vec4 FragColor;
 
+        uniform sampler2D uBaseTexture;
+        uniform vec4 uBaseColor;
 
-        in vec2 TexCoord;
+        in vec2[5] TexCoords;
         in vec3 Normal;
         in vec4 Color;
 
         void main() {
-            FragColor = vec4(Normal, 1);
+            vec4 finalColor =  uBaseColor * Color * texture(uBaseTexture, TexCoords[0]);
+            FragColor = finalColor;
         }
     </script>
   </body>

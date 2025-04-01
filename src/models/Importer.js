@@ -1,5 +1,5 @@
-import {Scene, RenderObj, Camera} from "@/models/RenderObjs.js";
-import {vec3, vec2, vec4, mat3, mat4, mat2} from "gl-matrix";
+import {RenderObj, Scene} from "@/models/RenderObjs.js";
+import {vec4} from "gl-matrix";
 
 export default {
 
@@ -54,7 +54,7 @@ export default {
                 if (bufferViewData["byteStride"]) {
                     offset += bufferViewData["byteStride"] * i;
                 } else {
-                    offset += i * byteSize;
+                    offset += i * byteSize * numComponents;
                 }
                 try{
                     let element = loadComponents(numComponents, offset, byteSize, dataAccessFunc);
@@ -72,7 +72,7 @@ export default {
         let loadDataFromAccessor = (accessorData) => {
             let arr = [];
 
-            if (!accessorData){
+            if (accessorData == null) {
                 return arr;
             }
 
@@ -141,7 +141,37 @@ export default {
             return arr;
         }
 
-        let loadPrimitive = (primData, name) => {
+        let loadTexture = async  (texIndex) => {
+            let texData = data["textures"][texIndex];
+            let sourceData = data["images"][texData["source"]];
+            let sampleData = data["samplers"][texData["sampler"]];
+
+            let tex = new Image();
+
+            await new Promise((resolve, reject) => {
+                tex.onload = () => {
+                    resolve(tex);
+                }
+                tex.onerror = () => {
+                    throw new Error(`Could not load texture ${sourceData["uri"]}`);
+                }
+                tex.src = filePath + sourceData["uri"];
+            });
+
+            let texture = gl.createTexture();
+            gl.bindTexture(gl.TEXTURE_2D, texture);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, sampleData['minFilter']);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, sampleData['magFilter']);
+            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, tex);
+            gl.generateMipmap(gl.TEXTURE_2D);
+
+            return texture;
+        }
+
+
+        let loadPrimitive = async (primData, name) => {
             let prim = new RenderObj(gl);
             prim.name = name;
             prim.primitiveMode = primData["mode"] ? primData["mode"] : 4;
@@ -150,46 +180,77 @@ export default {
             prim._vertices.positions = loadDataFromAccessor(data["accessors"][primData["attributes"]["POSITION"]]);
             prim._vertices.normals = loadDataFromAccessor(data["accessors"][primData["attributes"]["NORMAL"]]);
             prim._vertices.colors = loadDataFromAccessor(data["accessors"][primData["attributes"]["COLOR_0"]]);
-            prim._vertices.texCoords = loadDataFromAccessor(data["accessors"][primData["attributes"]["TEXCOORD_0"]]);
+
+            if (prim._vertices.colors.length === 0){
+                for (let i = 0; i < prim._vertices.positions.length; i+= 3) {
+                    prim._vertices.colors.push(1);
+                    prim._vertices.colors.push(1);
+                    prim._vertices.colors.push(1);
+                    prim._vertices.colors.push(1);
+                }
+            } else {
+                for (const colorKey in prim._vertices.colors) {
+                    prim._vertices.colors[colorKey] /= 255;
+                }
+            }
+
+            let texCoordKeys = Object.keys(primData["attributes"]).filter(key => key.substring(0, 8) === 'TEXCOORD');
+
+            for (const key of texCoordKeys) {
+                prim._vertices.texCoordsLists.push( loadDataFromAccessor(data["accessors"][primData["attributes"][key]]) )
+            }
+
+            if (primData["material"] != null){
+                prim.material = data["materials"][primData["material"]];
+                if (!prim.material.pbrMetallicRoughness.baseColorFactor){
+                    prim.material.pbrMetallicRoughness.baseColorFactor = vec4.fromValues(1,1,1,1);
+                }
+            }
+
+
+            if (prim.material.pbrMetallicRoughness.baseColorTexture != null) {
+                prim.material.pbrMetallicRoughness.baseColorTexture.texture = await loadTexture(prim.material.pbrMetallicRoughness.baseColorTexture.index);
+            }
+
             prim.loadBuffers();
 
             return prim;
         }
 
-        let loadNode = (nodeData) => {
+        let loadNode = async (nodeData) => {
             let node = new Scene(gl);
             node.name = nodeData["name"];
             let children = nodeData["children"];
-            if (!children) {
+            if (children == null) {
                 children = nodeData["nodes"];
             }
 
-            if (nodeData["translation"]){
+            if (nodeData["translation"] != null){
                 node.setPosition(nodeData["translation"][0], nodeData["translation"][1], nodeData["translation"][2]);
             }
 
-            if (nodeData["rotation"]){
+            if (nodeData["rotation"] != null){
                 node.setRotation(nodeData["rotation"][0], nodeData["rotation"][1], nodeData["rotation"][2], nodeData["rotation"][3]);
             }
 
-            if (nodeData["scale"]){
+            if (nodeData["scale"] != null){
                 node.setScale(nodeData["scale"][0], nodeData["scale"][1], nodeData["scale"][2]);
             }
 
 
-            if (nodeData["mesh"]){
+            if (nodeData["mesh"] != null) {
                 let meshData = data["meshes"][nodeData["mesh"]];
                 let i = 0;
                 for (let primitive of meshData["primitives"]) {
-                    node.addChild(loadPrimitive(primitive, meshData["name"] + '_prim_' + i));
+                    node.addChild(await loadPrimitive(primitive, meshData["name"] + '_prim_' + i));
                     i++;
                 }
 
             }
 
-            if (children) {
+            if (children != null) {
                 for (let child of children) {
-                    node.addChild(loadNode(data["nodes"][child]));
+                    node.addChild(await loadNode(data["nodes"][child]));
                 }
             }
 
@@ -213,10 +274,7 @@ export default {
 
             scene = loadNode(data["scenes"][data["scene"]])
 
-            scene = scene._children[0]._children[0];
-
         });
-        debugger;
         return scene;
 
 
