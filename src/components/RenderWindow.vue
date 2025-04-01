@@ -10,6 +10,7 @@ const props = defineProps({model: String});
 const canvas = ref(null);
 const renderer = ref(null);
 const scene = ref(null);
+const loaded = ref(false);
 
 const axisToRotate = ref(null);
 const rotationDegrees = ref(5);
@@ -42,6 +43,7 @@ window.onresize = () => {
 
 
 onMounted(async () => {
+  loaded.value = false;
   gl = canvas.value.getContext('webgl2');
   if(!gl) {
     alert("WebGL2 not supported!");
@@ -69,7 +71,11 @@ onMounted(async () => {
   scene.value = (await importer.importGLTF2(props.model, gl));
   scene.value._transform.position = vec3.fromValues(0,-2,20);
 
+
   renderer.value.setCurrentScene(scene.value);
+
+  loaded.value = true;
+
   requestAnimationFrame(update);
 
 });
@@ -101,18 +107,19 @@ img {
 
   <div class="row mx-auto canvasContainer">
     <div class="col-md-8" id="canvasBox">
-      <canvas ref="canvas"></canvas>
+      <canvas ref="canvas" v-show="loaded"></canvas>
+      <h3 v-show="!loaded">Loading...</h3>
     </div>
     <div class="col-md-4">
       <div class="row" @mouseup="axisToRotate=null" @touchend="axisToRotate=null">
-        <img src="/arrowUp.png" class="contrast col-md-3" @mousedown="axisToRotate = 'X';" @touchstart="axisToRotate = 'X';" />
-        <img src="/arrowDown.png" class="contrast col-md-3" @mousedown="axisToRotate = '-X';" @touchstart="axisToRotate = '-X';" />
-        <img src="/arrowLeft.png" class="contrast col-md-3" @mousedown="axisToRotate = '-Y';" @touchstart="axisToRotate = '-Y';" />
-        <img src="/arrowRight.png" class="contrast col-md-3" @mousedown="axisToRotate = 'Y';" @touchstart="axisToRotate = 'Y';" />
+        <img src="/arrowUp.png" class="contrast col-md-3" @mousedown="axisToRotate = 'X';" @touchstart="axisToRotate = 'X';"  alt="arrow-up"/>
+        <img src="/arrowDown.png" class="contrast col-md-3" @mousedown="axisToRotate = '-X';" @touchstart="axisToRotate = '-X';" alt="arrow-down"/>
+        <img src="/arrowLeft.png" class="contrast col-md-3" @mousedown="axisToRotate = '-Y';" @touchstart="axisToRotate = '-Y';" alt="arrow-left"/> />
+        <img src="/arrowRight.png" class="contrast col-md-3" @mousedown="axisToRotate = 'Y';" @touchstart="axisToRotate = 'Y';" alt="arrow-right"/>
       </div>
       <div class="row" style="margin-top: 50px;">
-        <img src="/ZoomPlus.png" class="contrast col-md-4" @click="renderer.camera.zoom(-5)"/>
-        <img src="/ZoomMinus.png" class="contrast col-md-4" @click="renderer.camera.zoom(5)"/>
+        <img src="/ZoomPlus.png" class="contrast col-md-4" @click="renderer.camera.zoom(-5)" alt="zoom-plus"/>
+        <img src="/ZoomMinus.png" class="contrast col-md-4" @click="renderer.camera.zoom(5)" alt="zoom-minus"/>
       </div>
     </div>
   </div>

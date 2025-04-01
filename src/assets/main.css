@@ -1,9 +1,25 @@
 @import './base.css';
 
+@font-face {
+  font-family: 'Bytesized';
+  src: url('./fonts/Bytesized/Bytesized-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'Montserrat-Underline';
+  src: url('./fonts/Montserrat_Underline/MontserratUnderline-VariableFont_wght.ttf');
+}
+
+@font-face {
+  font-family: 'Tektur';
+  src: url('./fonts/Tektur/Tektur-VariableFont_wdth,wght.ttf');
+}
+
 #app {
   align-self:center;
   margin: 0 auto auto auto;
   font-weight: normal;
+  font-family: 'Tektur', serif;
   min-width: 100%;
   min-height: 1000px;
   background-image: linear-gradient(var(--color-background-mute), var(--color-background-mute)), url("/icoicon.png");

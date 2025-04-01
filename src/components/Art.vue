@@ -16,6 +16,5 @@ import RenderWindow from "@/components/RenderWindow.vue";
 
   </h4>
 
-  <render-window model="fiat"></render-window>
-<!--  <render-window model="geomountains"></render-window>-->
+  <render-window model="geomountains"></render-window>
 </template>
