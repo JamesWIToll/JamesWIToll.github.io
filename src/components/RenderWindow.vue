@@ -104,11 +104,11 @@ img {
       <canvas ref="canvas"></canvas>
     </div>
     <div class="col-md-4">
-      <div class="row" @mouseup="axisToRotate=null">
-        <img src="/arrowUp.png" class="contrast col-md-3" @mousedown="axisToRotate = 'X';" />
-        <img src="/arrowDown.png" class="contrast col-md-3" @mousedown="axisToRotate = '-X';"/>
-        <img src="/arrowLeft.png" class="contrast col-md-3" @mousedown="axisToRotate = '-Y';" />
-        <img src="/arrowRight.png" class="contrast col-md-3" @mousedown="axisToRotate = 'Y';" />
+      <div class="row" @mouseup="axisToRotate=null" @touchend="axisToRotate=null">
+        <img src="/arrowUp.png" class="contrast col-md-3" @mousedown="axisToRotate = 'X';" @touchstart="axisToRotate = 'X';" />
+        <img src="/arrowDown.png" class="contrast col-md-3" @mousedown="axisToRotate = '-X';" @touchstart="axisToRotate = '-X';" />
+        <img src="/arrowLeft.png" class="contrast col-md-3" @mousedown="axisToRotate = '-Y';" @touchstart="axisToRotate = '-Y';" />
+        <img src="/arrowRight.png" class="contrast col-md-3" @mousedown="axisToRotate = 'Y';" @touchstart="axisToRotate = 'Y';" />
       </div>
       <div class="row" style="margin-top: 50px;">
         <img src="/ZoomPlus.png" class="contrast col-md-4" @click="renderer.camera.zoom(-5)"/>
