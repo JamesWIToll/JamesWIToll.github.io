@@ -49,8 +49,8 @@ const captured = ref(false);
 
 const capture = async (event) => {
   if (event.type === "touchstart") {
-    lastX = event.changedTouches[0].clientX;
-    lastY = event.changedTouches[0].clientY;
+    lastX = event.targetTouches[0].clientX;
+    lastY = event.targetTouches[0].clientY;
   }else {
     lastX = event.clientX;
     lastY = event.clientY;
@@ -58,18 +58,18 @@ const capture = async (event) => {
   captured.value = true;
 }
 
-const release = async (event) => {
+const release = async () => {
   captured.value = false;
 }
 const rotateScene = async (event) => {
   event.preventDefault();
 
   if (captured.value){
-    let currX = lastX;
-    let currY = lastY;
-    if (event.type == "touchmove"){
-      currX = event.changedTouches[0].clientX;
-      currY = event.changedTouches[0].clientY;
+    let currX;
+    let currY;
+    if (event.type === "touchmove"){
+      currX = event.targetTouches[0].clientX;
+      currY = event.targetTouches[0].clientY;
     } else {
       currX = event.clientX;
       currY = event.clientY;
@@ -80,8 +80,8 @@ const rotateScene = async (event) => {
 
     vec3.add(sceneRotate, sceneRotate, vec3.fromValues(-deltaY*45, deltaX*45, 0));
 
-    lastX = event.clientX;
-    lastY = event.clientY;
+    lastX = currX;
+    lastY = currY;
   }
 }
 
@@ -161,7 +161,7 @@ img {
     <div class="col-md-8" id="canvasBox">
       <canvas ref="canvas" @mousedown="capture"
                             @touchstart="capture"
-                            @touchend="capture"
+                            @touchend="release"
                             @mouseup="release"
                             @mousemove="rotateScene"
                             @touchmove="rotateScene">
