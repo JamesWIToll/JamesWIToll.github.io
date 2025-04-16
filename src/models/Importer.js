@@ -145,6 +145,7 @@ export default {
             let texData = data["textures"][texIndex];
             let sourceData = data["images"][texData["source"]];
             let sampleData = data["samplers"][texData["sampler"]];
+            let alpha = false;
 
             let tex = new Image();
 
@@ -164,10 +165,15 @@ export default {
             gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
             gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, sampleData['minFilter']);
             gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, sampleData['magFilter']);
-            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, tex);
+            if (sourceData.mimeType === "image/png"){
+                alpha = true;
+                gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, tex);
+            } else {
+                gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, tex);
+            }
             gl.generateMipmap(gl.TEXTURE_2D);
 
-            return texture;
+            return { tex: texture, hasAlpha: alpha, img: tex };
         }
 
 
@@ -200,16 +206,25 @@ export default {
                 prim._vertices.texCoordsLists.push( loadDataFromAccessor(data["accessors"][primData["attributes"][key]]) )
             }
 
+
             if (primData["material"] != null){
                 prim.material = data["materials"][primData["material"]];
+                prim.material.transparent = false;
                 if (!prim.material.pbrMetallicRoughness.baseColorFactor){
                     prim.material.pbrMetallicRoughness.baseColorFactor = vec4.fromValues(1,1,1,1);
+                } else if (prim.material.pbrMetallicRoughness.baseColorFactor[3] < 1){
+                    prim.material.transparent = true;
                 }
             }
 
 
             if (prim.material.pbrMetallicRoughness.baseColorTexture != null) {
-                prim.material.pbrMetallicRoughness.baseColorTexture.texture = await loadTexture(prim.material.pbrMetallicRoughness.baseColorTexture.index);
+                let texObj  = await loadTexture(prim.material.pbrMetallicRoughness.baseColorTexture.index);
+                prim.material.pbrMetallicRoughness.baseColorTexture.texture = texObj.tex;
+                if (texObj.hasAlpha && !prim.material.transparent) {
+                    prim.material.transparent = true;
+                }
+
             }
 
             prim.loadBuffers();

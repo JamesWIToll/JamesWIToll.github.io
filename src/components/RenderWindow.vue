@@ -139,7 +139,8 @@ onMounted(async () => {
   width: 80%;
   min-height: 500px;
   background-color: var(--accent-primary);
-  padding: 50px;
+  padding: 2%;
+  margin: 2%;
 }
 
 canvas {

@@ -5,8 +5,8 @@
     <link rel="icon" href="/icoicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>James Tolliver Systems Programmer</title>
-    <script type="module" crossorigin src="/assets/index-DFCZ4yaI.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-BUftHjs1.css">
+    <script type="module" crossorigin src="/assets/index-Dk6Lzye8.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-os53n-sF.css">
   </head>
   <body style="min-height:100%;">
     <div id="app"></div>
@@ -47,13 +47,17 @@
 
         uniform sampler2D uBaseTexture;
         uniform vec4 uBaseColor;
+        uniform bool uUseDiffTexture;
 
         in vec2[5] TexCoords;
         in vec3 Normal;
         in vec4 Color;
 
         void main() {
-            vec4 finalColor =  uBaseColor * Color * texture(uBaseTexture, TexCoords[0]);
+            vec4 finalColor =  uBaseColor * Color;
+            if (uUseDiffTexture){
+                finalColor *= texture(uBaseTexture, TexCoords[0]);
+            }
             FragColor = finalColor;
         }
     </script>

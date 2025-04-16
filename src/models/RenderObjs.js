@@ -172,10 +172,10 @@ export class Scene extends Node {
         this.addPointLight = (pointLight) => { this._pointLights.push(pointLight); };
 
 
-        this.render = (shader) => {
+        this.render = (renderer) => {
 
             this._children.forEach((child) => {
-                child.render(shader);
+                child.render(renderer);
             })
         }
 
@@ -255,7 +255,15 @@ export class RenderObj extends Node {
 
         }
 
-        this.render = (shader) => {
+        this.render = (renderer, blend = false) => {
+            let shader = renderer.shaderProg;
+
+            if (!blend && this.material["alphaMode"] != null && this.material["alphaMode"] !== "OPAQUE") {
+                renderer.transparentQueue.push(this);
+                return;
+            }
+
+
             let model = this.getModelMatrix();
             shader.setMat4("uModel", model);
             shader.setVec4("uBaseColor", this.material.pbrMetallicRoughness.baseColorFactor)
@@ -264,6 +272,9 @@ export class RenderObj extends Node {
                 this.gl.activeTexture(0);
                 this.gl.bindTexture(this.gl.TEXTURE_2D, this.material.pbrMetallicRoughness.baseColorTexture.texture);
                 shader.setBoolOrInt("uBaseTexture", 0)
+                shader.setBoolOrInt("uUseDiffTexture", true);
+            } else {
+                shader.setBoolOrInt("uUseDiffTexture", false);
             }
 
             this.gl.bindVertexArray(this.VAO);

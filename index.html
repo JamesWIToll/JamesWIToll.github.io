@@ -46,13 +46,17 @@
 
         uniform sampler2D uBaseTexture;
         uniform vec4 uBaseColor;
+        uniform bool uUseDiffTexture;
 
         in vec2[5] TexCoords;
         in vec3 Normal;
         in vec4 Color;
 
         void main() {
-            vec4 finalColor =  uBaseColor * Color * texture(uBaseTexture, TexCoords[0]);
+            vec4 finalColor =  uBaseColor * Color;
+            if (uUseDiffTexture){
+                finalColor *= texture(uBaseTexture, TexCoords[0]);
+            }
             FragColor = finalColor;
         }
     </script>

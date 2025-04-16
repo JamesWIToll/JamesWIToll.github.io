@@ -1,4 +1,5 @@
 import {Camera} from "@/models/RenderObjs.js";
+import {vec3} from "gl-matrix";
 
 export class Renderer {
     constructor(_gl) {
@@ -6,6 +7,7 @@ export class Renderer {
         this.shaderProg = null;
         this.currScene = null;
         this.camera = new Camera();
+        this.transparentQueue = [];
 
 
         if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
@@ -28,7 +30,29 @@ export class Renderer {
             this.camera = camera;
         }
 
+        this.sortTransparent  = (a, b) => {
+            let camPos = this.camera._transform.position;
+            let aPos = a._transform.position;
+            let bPos = b._transform.position;
+
+            let aDist = Math.abs(vec3.dist(camPos, aPos));
+            let bDist = Math.abs(vec3.dist(camPos, bPos));
+
+            return bDist - aDist;
+        }
+
+        this.renderTransparent = () => {
+            this.gl.enable(this.gl.BLEND);
+            this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
+            for (const obj of this.transparentQueue) {
+                obj.render(this, true);
+            }
+            this.gl.disable(this.gl.BLEND);
+        }
+
         this.render = () => {
+            this.transparentQueue = []
+
             this.shaderProg.use();
             this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
             this.gl.enable(this.gl.DEPTH_TEST);
@@ -36,7 +60,12 @@ export class Renderer {
             this.shaderProg.setMat4("uView", this.camera.getViewMatrix())
             this.shaderProg.setMat4("uProjection", this.camera.getProjectionMatrix(this.gl.canvas.width, this.gl.canvas.height));
 
-            this.currScene.render(this.shaderProg);
+            this.currScene.render(this);
+
+            this.transparentQueue.sort(this.sortTransparent);
+
+            this.renderTransparent();
+
         }
     }
 
