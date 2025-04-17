@@ -277,6 +277,16 @@ export class RenderObj extends Node {
                 shader.setBoolOrInt("uUseDiffTexture", false);
             }
 
+            if (!this.material.pbrMetallicRoughness["metallicFactor"]){
+                this.material.pbrMetallicRoughness["metallicFactor"] = 1;
+            }
+            shader.setFloat("uMetallicness", this.material.pbrMetallicRoughness["metallicFactor"]);
+
+            if (!this.material.pbrMetallicRoughness["roughnessFactor"]){
+                this.material.pbrMetallicRoughness["roughnessFactor"] = 1;
+            }
+            shader.setFloat("uRoughness", this.material.pbrMetallicRoughness["roughnessFactor"]);
+
             this.gl.bindVertexArray(this.VAO);
             this.gl.drawElements(this.primitiveMode, this._indices.length, this.gl.UNSIGNED_INT, 0)
             this.gl.bindVertexArray(null);

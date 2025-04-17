@@ -11,6 +11,7 @@ const canvas = ref(null);
 const renderer = ref(null);
 const scene = ref(null);
 const loaded = ref(false);
+const currModel = ref(null);
 let gl = null;
 
 
@@ -21,7 +22,49 @@ let sceneRotate = vec3.create();
 const axisToMove = ref("");
 const moveAmt = 0.5;
 
-const update = () => {
+
+const loadScene = async () => {
+  loaded.value = false;
+  gl = canvas.value.getContext('webgl2');
+  if(!gl) {
+    alert("WebGL2 not supported!");
+    return;
+  }
+
+
+  let bb = document.querySelector ('#canvasBox').getBoundingClientRect();
+  gl.canvas.width = bb.width;
+  gl.canvas.height = bb.height;
+
+  let vertSrc = document.getElementById("vertexShader").innerText;
+  let fragSrc = document.getElementById("fragmentShader").innerText;
+
+  let vStartPos = vertSrc.indexOf("#version");
+  vertSrc = vertSrc.substring(vStartPos, vertSrc.length);
+
+  let fStartPos = fragSrc.indexOf("#version");
+  fragSrc = fragSrc.substring(fStartPos, fragSrc.length);
+
+  let prog = new Shader(gl, vertSrc, fragSrc);
+  renderer.value = new Renderer(gl);
+  renderer.value.setShaderProgram(prog);
+
+  debugger;
+  scene.value = (await importer.importGLTF2(currModel.value, gl));
+  scene.value._transform.position = vec3.fromValues(0,-2,20);
+
+
+  renderer.value.setCurrentScene(scene.value);
+
+  loaded.value = true;
+}
+
+const update = async () => {
+  if (currModel.value !== props.model) {
+    currModel.value = props.model;
+    await loadScene();
+  }
+  debugger;
   switch (axisToMove.value.toLowerCase()) {
     case "x":
       scene.value.move(moveAmt, 0, 0);
@@ -92,41 +135,7 @@ window.onresize = () => {
   gl.canvas.height = bb.height;
 }
 
-
 onMounted(async () => {
-  loaded.value = false;
-  gl = canvas.value.getContext('webgl2');
-  if(!gl) {
-    alert("WebGL2 not supported!");
-    return;
-  }
-
-
-  let bb = document.querySelector ('#canvasBox').getBoundingClientRect();
-  gl.canvas.width = bb.width;
-  gl.canvas.height = bb.height;
-
-  let vertSrc = document.getElementById("vertexShader").innerText;
-  let fragSrc = document.getElementById("fragmentShader").innerText;
-
-  let vStartPos = vertSrc.indexOf("#version");
-  vertSrc = vertSrc.substring(vStartPos, vertSrc.length);
-
-  let fStartPos = fragSrc.indexOf("#version");
-  fragSrc = fragSrc.substring(fStartPos, fragSrc.length);
-
-  let prog = new Shader(gl, vertSrc, fragSrc);
-  renderer.value = new Renderer(gl);
-  renderer.value.setShaderProgram(prog);
-
-  scene.value = (await importer.importGLTF2(props.model, gl));
-  scene.value._transform.position = vec3.fromValues(0,-2,20);
-
-
-  renderer.value.setCurrentScene(scene.value);
-
-  loaded.value = true;
-
   requestAnimationFrame(update);
 
 });

@@ -1,5 +1,16 @@
 <script setup>
 import RenderWindow from "@/components/RenderWindow.vue";
+import { ref } from "vue";
+import { BFormSelect } from "bootstrap-vue-next";
+
+const renderWindow = ref(null);
+
+const currModel = ref("fiat")
+const modelList = ref([
+    "fiat",
+    "geomountains"
+])
+
 </script>
 
 <style scoped>
@@ -16,5 +27,8 @@ import RenderWindow from "@/components/RenderWindow.vue";
 
   </h4>
 
-  <render-window model="fiat"></render-window>
+  <div class="form-group mx-auto" style="max-width: 60%">
+    <BFormSelect v-model="currModel" :options="modelList"/>
+  </div>
+  <render-window :model="currModel" ref="renderWindow"></render-window>
 </template>

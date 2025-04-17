@@ -59,6 +59,9 @@ export class Renderer {
             this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
             this.shaderProg.setMat4("uView", this.camera.getViewMatrix())
             this.shaderProg.setMat4("uProjection", this.camera.getProjectionMatrix(this.gl.canvas.width, this.gl.canvas.height));
+            this.shaderProg.setVec3("uLights[0].color", vec3.fromValues(100, 100, 90));
+            this.shaderProg.setVec3("uLights[0].posDir", vec3.fromValues(5,5,20));
+
 
             this.currScene.render(this);
 
