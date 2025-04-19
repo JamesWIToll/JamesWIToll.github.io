@@ -175,8 +175,8 @@
             color = color / (color + vec3(1.0));
             color = pow (color, vec3(1.0/2.2));
 
-            vec4 linecolor = texture(uLines1, gl_FragCoord.xy/(16.0*float(uHatchSize)));
-            vec4 linecolor2 = texture(uLines2, gl_FragCoord.xy/(16.0*float(uHatchSize)));
+            vec4 linecolor = texture(uLines1, gl_FragCoord.xy/(8.0*float(uHatchSize)) + vec2(cos(gl_FragCoord.x)*0.005, sin(gl_FragCoord.y)*0.005));
+            vec4 linecolor2 = texture(uLines2, gl_FragCoord.xy/(8.0*float(uHatchSize)) + vec2(cos(gl_FragCoord.x)*0.005, sin(gl_FragCoord.y)*0.005));
             float intensity = length(color.rgb);
 
             if (uQuantizeColors){
