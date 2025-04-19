@@ -14,6 +14,10 @@ const loaded = ref(false);
 const currModel = ref(null);
 let gl = null;
 
+const useQuantization = ref(false);
+const colorQuantity = ref(6);
+const useHatching = ref(false);
+const hatchingSize = ref(2);
 
 
 let lastX = 0;
@@ -36,8 +40,8 @@ const loadScene = async () => {
   gl.canvas.width = bb.width;
   gl.canvas.height = bb.height;
 
-  let vertSrc = document.getElementById("vertexShader").innerText;
-  let fragSrc = document.getElementById("fragmentShader").innerText;
+  let vertSrc = document.getElementById("vertexShader").text;
+  let fragSrc = document.getElementById("fragmentShader").text;
 
   let vStartPos = vertSrc.indexOf("#version");
   vertSrc = vertSrc.substring(vStartPos, vertSrc.length);
@@ -49,12 +53,12 @@ const loadScene = async () => {
   renderer.value = new Renderer(gl);
   renderer.value.setShaderProgram(prog);
 
-  debugger;
   scene.value = (await importer.importGLTF2(currModel.value, gl));
   scene.value._transform.position = vec3.fromValues(0,-2,20);
 
 
   renderer.value.setCurrentScene(scene.value);
+  await renderer.value.loadResources();
 
   loaded.value = true;
 }
@@ -64,7 +68,12 @@ const update = async () => {
     currModel.value = props.model;
     await loadScene();
   }
-  debugger;
+
+  renderer.value.useColorQuantization = useQuantization.value;
+  renderer.value.colorQuantity = colorQuantity.value;
+  renderer.value.useHatching = useHatching.value;
+  renderer.value.hatchingSize = hatchingSize.value;
+
   switch (axisToMove.value.toLowerCase()) {
     case "x":
       scene.value.move(moveAmt, 0, 0);
@@ -82,7 +91,7 @@ const update = async () => {
 
   scene.value.addRotation(sceneRotate[0], sceneRotate[1], sceneRotate[2]);
 
-  renderer.value.render();
+  await renderer.value.render();
 
   requestAnimationFrame(update);
 }
@@ -187,6 +196,25 @@ img {
       <div class="row" style="margin-top: 50px;">
         <img src="/ZoomPlus.png" class="contrast col-md-4" @click="renderer.camera.zoom(-5)" alt="zoom-plus"/>
         <img src="/ZoomMinus.png" class="contrast col-md-4" @click="renderer.camera.zoom(5)" alt="zoom-minus"/>
+      </div>
+
+      <br/><br/>
+      <div class="row">
+        <span class="col-md-6">
+          <label><input type="checkbox" v-model="useQuantization">Quantization</label>
+        </span>
+        <span class="col-md-6">
+          <label v-show="useQuantization" ><input type="number" v-model="colorQuantity" style="max-width: 50px;">Colors</label>
+        </span>
+      </div>
+      <br/><br/>
+      <div class="row">
+        <span class="col-md-6">
+          <label><input type="checkbox" v-model="useHatching" />Hatching</label>
+        </span>
+        <span class="col-md-6">
+          <label v-show="useHatching"><input type="number"  v-model="hatchingSize" style="max-width: 50px;">Size</label>
+        </span>
       </div>
     </div>
   </div>

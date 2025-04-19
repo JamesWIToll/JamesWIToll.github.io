@@ -3,7 +3,7 @@ import {vec4} from "gl-matrix";
 
 export default {
 
-    importTriangle: async (gl) => {
+    defaultTriangle: async (gl) => {
         let scene = new Scene(gl);
         scene.name = "Scene";
 

@@ -5,8 +5,8 @@
     <link rel="icon" href="/icoicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>James Tolliver Systems Programmer</title>
-    <script type="module" crossorigin src="/assets/index-CKyPIOps.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-RegmFx66.css">
+    <script type="module" crossorigin src="/assets/index-BUxu1PO5.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-3t7hzYji.css">
   </head>
   <body style="min-height:100%;">
     <div id="app"></div>
@@ -41,7 +41,6 @@
             WorldPos = vec3((uModel * vec4(aPos, 1.0f)).xyz);
         }
     </script>
-
     <script type="x-shader/x-fragment" id="fragmentShader">
         #version 300 es
         precision mediump float;
@@ -58,14 +57,20 @@
             vec3 posDir;
         };
 
+        uniform sampler2D uLines1;
+        uniform sampler2D uLines2;
+        uniform bool uCrosshatch;
+        uniform bool uQuantizeColors;
+
+        uniform int uHatchSize;
+        uniform int uColorQuantity;
+
         uniform sampler2D uBaseTexture;
         uniform vec4 uBaseColor;
         uniform bool uUseDiffTexture;
         uniform float uMetallicness;
         uniform float uRoughness;
-        uniform float uAO;
-
-        uniform vec3 camPos;
+        uniform vec3 uCamPos;
 
         #define NR_LIGHTS 10
         uniform Light[NR_LIGHTS] uLights;
@@ -101,19 +106,44 @@
             return F0 + (1.0 - F0) * pow(1.0 - cosTheta, 5.0);
         }
 
+        float QuantizeChannel(float f, float num){
+            float res = f;
+
+            float currFloor = 0.0;
+            float currCiel = 1.0/num;
+
+            while (currCiel <= 1.0){
+                if ( res <= currFloor){
+                    res = currFloor;
+                } else if (res <= currCiel) {
+                    res = currCiel;
+                    break;
+                }
+
+                currFloor = currCiel;
+                currCiel += 1.0/num;
+            }
+
+            if (res > currCiel) {
+                res = currCiel;
+            }
+
+            return res;
+        }
+
         vec4 calcPBR(vec4 baseColor){
             vec3 result = baseColor.rgb;
             float alpha = baseColor.a;
 
             vec3 N = normalize(Normal);
-            vec3 V = normalize(camPos - WorldPos);
+            vec3 V = normalize(uCamPos - WorldPos);
 
             vec3 F0 = vec3(0.04);
             F0 = mix(F0, result, uMetallicness);
-            
+
             vec3 Lo = vec3(0.0);
             for (int i = 0; i < NR_LIGHTS; i++) {
-               //radiance
+                //radiance
                 vec3 L = normalize(uLights[i].posDir - WorldPos);
                 vec3 H = normalize(V + L);
                 float distance = length(uLights[i].posDir - WorldPos);
@@ -144,7 +174,27 @@
 
             color = color / (color + vec3(1.0));
             color = pow (color, vec3(1.0/2.2));
+
+            vec4 linecolor = texture(uLines1, gl_FragCoord.xy/(16.0*float(uHatchSize)));
+            vec4 linecolor2 = texture(uLines2, gl_FragCoord.xy/(16.0*float(uHatchSize)));
+            float intensity = length(color.rgb);
+
+            if (uQuantizeColors){
+                color.r = QuantizeChannel(color.r, float(uColorQuantity));
+                color.g = QuantizeChannel(color.g, float(uColorQuantity));
+                color.b = QuantizeChannel(color.b, float(uColorQuantity));
+            }
+
+            if (intensity < 0.4 && uCrosshatch){
+                color = mix(color, linecolor.rgb, linecolor.w*0.8);
+            }
+            if (intensity < 0.2 && uCrosshatch) {
+                color = mix(color, linecolor2.rgb, linecolor2.w*0.8);
+            }
+
+
             result = color.rgb;
+
 
             return vec4(result, alpha);
         }
@@ -154,6 +204,7 @@
             if (uUseDiffTexture){
                 finalColor *= texture(uBaseTexture, TexCoords[0]);
             }
+
             FragColor = calcPBR(finalColor);
         }
     </script>
