@@ -179,9 +179,8 @@
             float intensity = length(color.rgb);
 
             if (uQuantizeColors){
-                color.r = QuantizeChannel(color.r, float(uColorQuantity));
-                color.g = QuantizeChannel(color.g, float(uColorQuantity));
-                color.b = QuantizeChannel(color.b, float(uColorQuantity));
+                float quantizedIntesity = QuantizeChannel(intensity, float(uColorQuantity));
+                color = normalize(color.rgb) * quantizedIntesity;
             }
 
             if (intensity < 0.4 && uCrosshatch){

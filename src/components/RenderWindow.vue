@@ -201,10 +201,10 @@ img {
       <br/><br/>
       <div class="row">
         <span class="col-md-6">
-          <label><input type="checkbox" v-model="useQuantization">Quantization</label>
+          <label><input type="checkbox" v-model="useQuantization">Cell Shading</label>
         </span>
         <span class="col-md-6">
-          <label v-show="useQuantization" ><input type="number" v-model="colorQuantity" style="max-width: 50px;">Colors</label>
+          <label v-show="useQuantization" ><input type="number" v-model="colorQuantity" style="max-width: 50px;">Cells</label>
         </span>
       </div>
       <br/><br/>
