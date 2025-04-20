@@ -15,9 +15,9 @@ const currModel = ref(null);
 let gl = null;
 
 const useQuantization = ref(false);
-const colorQuantity = ref(6);
+const colorQuantity = ref(5);
 const useHatching = ref(false);
-const hatchingSize = ref(2);
+const hatchingSize = ref(4);
 
 
 let lastX = 0;
