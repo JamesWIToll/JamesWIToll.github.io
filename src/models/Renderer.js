@@ -21,6 +21,7 @@ export class Renderer {
         this.useColorQuantization = false;
         this.hatchingSize = 1;
         this.colorQuantity = 6;
+        this.ambientIntensity = 0.05;
 
         this.useSobel = false;
         this.sobelThreshold = 1.0;
@@ -177,6 +178,7 @@ export class Renderer {
             this.shaderProg.setBoolOrInt("uQuantizeColors", this.useColorQuantization);
             this.shaderProg.setBoolOrInt("uHatchSize", this.hatchingSize);
             this.shaderProg.setBoolOrInt("uColorQuantity", this.colorQuantity);
+            this.shaderProg.setFloat("uAmbientIntensity", this.ambientIntensity);
 
 
             this.currScene.render(this);

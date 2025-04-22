@@ -19,7 +19,7 @@ import {BNavbar, BNavbarNav, BNavItem, BCollapse, BNavbarToggle, BNavbarBrand} f
         <BNavItem href="/#projects"> Projects </BNavItem>
         <BNavItem href="/#education"> Education </BNavItem>
         <BNavItem href="/#experience"> Experience </BNavItem>
-        <BNavItem href="/#art">Art</BNavItem>
+        <BNavItem href="/#art">3D Viewer</BNavItem>
         <BNavItem href="/#contact"> Contact </BNavItem>
         <BNavItem href="/resume.pdf">Resume</BNavItem>
       </BNavbarNav>

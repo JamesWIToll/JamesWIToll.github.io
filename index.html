@@ -74,6 +74,7 @@
         uniform bool uUseDiffTexture;
         uniform float uMetallicness;
         uniform float uRoughness;
+        uniform float uAmbientIntensity;
         uniform vec3 uCamPos;
 
         #define NR_LIGHTS 10
@@ -173,7 +174,8 @@
                 Lo += (kD*result / PI + specular) * radiance * NdotL;
             }
 
-            vec3 ambient = vec3(0.03) * result;
+
+            vec3 ambient = vec3(uAmbientIntensity) * result;
             vec3 color = ambient + Lo;
 
             color = color / (color + vec3(1.0));

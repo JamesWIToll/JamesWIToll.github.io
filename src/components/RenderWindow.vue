@@ -18,6 +18,7 @@ const useQuantization = ref(false);
 const colorQuantity = ref(5);
 const useHatching = ref(false);
 const hatchingSize = ref(4);
+const ambientIntensity = ref(0.05);
 
 const useSobel = ref(false);
 const sobelThreshold = ref(0.5);
@@ -95,6 +96,7 @@ const update = async () => {
   renderer.value.colorQuantity = colorQuantity.value;
   renderer.value.useHatching = useHatching.value;
   renderer.value.hatchingSize = hatchingSize.value;
+  renderer.value.ambientIntensity = ambientIntensity.value;
 
   renderer.value.useSobel = useSobel.value;
   renderer.value.sobelThreshold = sobelThreshold.value;
@@ -230,13 +232,19 @@ img {
       <br/><br/>
       <div class="row">
         <span class="col-md-6">
+          <label>Ambient Intensity:<input type="number" v-model="ambientIntensity" step="0.01" max="0.8" min="0.01" style="max-width: 100px;"/></label>
+        </span>
+      </div>
+      <br/>
+      <div class="row">
+        <span class="col-md-6">
           <label><input type="checkbox" v-model="useQuantization">Cell Shading</label>
         </span>
         <span class="col-md-6">
           <label v-show="useQuantization" >Cells:<input type="number" v-model="colorQuantity" step="1" max="10" min="1" style="max-width: 50px;"/></label>
         </span>
       </div>
-      <br/><br/>
+      <br/>
       <div class="row">
         <span class="col-md-6">
           <label><input type="checkbox" v-model="useHatching" />Hatching</label>
@@ -245,7 +253,7 @@ img {
           <label v-show="useHatching">Size:<input type="number"  v-model="hatchingSize" step="1" min="2" max="10" style="max-width: 50px;"/></label>
         </span>
       </div>
-      <br/><br/>
+      <br/>
       <div class="row">
         <span class="col-md-6">
           <label><input type="checkbox" v-model="useSobel">Outlines</label>
@@ -254,10 +262,10 @@ img {
           <label v-show="useSobel" >Threshold:<input type="number" v-model="sobelThreshold" step="0.1" min="0.1" max="0.9" style="max-width: 50px;"/></label>
         </span>
       </div>
-      <br/><br/>
+      <br/>
       <div class="row">
         <span class="col-md-6">
-          <label v-show="useSobel || useHatching"> Color: <input type="color" v-model="lineColor" style="max-width: 50px;"/></label>
+          <label v-show="useSobel || useHatching">Line Color: <input type="color" v-model="lineColor" style="max-width: 50px;"/></label>
         </span>
       </div>
 
