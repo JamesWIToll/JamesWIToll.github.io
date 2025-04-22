@@ -5,8 +5,8 @@
     <link rel="icon" href="/icoicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>James Tolliver Systems Programmer</title>
-    <script type="module" crossorigin src="/assets/index-Oa00Inbq.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-O2JpNaLF.css">
+    <script type="module" crossorigin src="/assets/index-alyxfpOW.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-Y_B01SSB.css">
   </head>
   <body style="min-height:100%;">
     <div id="app"></div>
@@ -75,6 +75,7 @@
         uniform bool uUseDiffTexture;
         uniform float uMetallicness;
         uniform float uRoughness;
+        uniform float uAmbientIntensity;
         uniform vec3 uCamPos;
 
         #define NR_LIGHTS 10
@@ -174,7 +175,8 @@
                 Lo += (kD*result / PI + specular) * radiance * NdotL;
             }
 
-            vec3 ambient = vec3(0.03) * result;
+
+            vec3 ambient = vec3(uAmbientIntensity) * result;
             vec3 color = ambient + Lo;
 
             color = color / (color + vec3(1.0));
