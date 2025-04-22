@@ -3,7 +3,7 @@ import {onMounted, ref} from "vue";
 import {Shader} from "@/models/Shader.js";
 import {Renderer} from "@/models/Renderer.js";
 import importer from "@/models/Importer.js";
-import {vec3} from "gl-matrix";
+import {vec3, vec4} from "gl-matrix";
 
 const props = defineProps({model: String});
 
@@ -19,6 +19,10 @@ const colorQuantity = ref(5);
 const useHatching = ref(false);
 const hatchingSize = ref(4);
 
+const useSobel = ref(false);
+const sobelThreshold = ref(0.5);
+const lineColor = ref("#000000");
+
 
 let lastX = 0;
 let lastY = 0;
@@ -26,6 +30,12 @@ let sceneRotate = vec3.create();
 const axisToMove = ref("");
 const moveAmt = 0.5;
 
+const getColorFromHexStr = (hex) => {
+  const r = parseInt(hex.slice(1,3), 16);
+  const g = parseInt(hex.slice(3,5), 16);
+  const b = parseInt(hex.slice(5,7), 16);
+  return vec3.fromValues(r / 255, g / 255, b / 255);
+}
 
 const loadScene = async () => {
   loaded.value = false;
@@ -41,17 +51,29 @@ const loadScene = async () => {
   gl.canvas.height = bb.height;
 
   let vertSrc = document.getElementById("vertexShader").text;
-  let fragSrc = document.getElementById("fragmentShader").text;
-
   let vStartPos = vertSrc.indexOf("#version");
   vertSrc = vertSrc.substring(vStartPos, vertSrc.length);
 
+  let fragSrc = document.getElementById("fragmentShader").text;
   let fStartPos = fragSrc.indexOf("#version");
   fragSrc = fragSrc.substring(fStartPos, fragSrc.length);
+
+  let postProcessVertSrc = document.getElementById("vert-postprocess").text;
+  let vppStartPos = postProcessVertSrc.indexOf("#version");
+  postProcessVertSrc = postProcessVertSrc.substring(vppStartPos, postProcessVertSrc.length);
+
+  let postProcessFragmentSrc = document.getElementById("frag-postprocess").text;
+  let fppStartPos = postProcessFragmentSrc.indexOf("#version");
+  postProcessFragmentSrc = postProcessFragmentSrc.substring(fppStartPos, postProcessFragmentSrc.length);
+
+
 
   let prog = new Shader(gl, vertSrc, fragSrc);
   renderer.value = new Renderer(gl);
   renderer.value.setShaderProgram(prog);
+
+  let progPP = new Shader(gl, postProcessVertSrc, postProcessFragmentSrc);
+  renderer.value.setPostProcessProg(progPP);
 
   scene.value = (await importer.importGLTF2(currModel.value, gl));
   scene.value._transform.position = vec3.fromValues(0,-2,20);
@@ -73,6 +95,13 @@ const update = async () => {
   renderer.value.colorQuantity = colorQuantity.value;
   renderer.value.useHatching = useHatching.value;
   renderer.value.hatchingSize = hatchingSize.value;
+
+  renderer.value.useSobel = useSobel.value;
+  renderer.value.sobelThreshold = sobelThreshold.value;
+
+  if (lineColor.value){
+    renderer.value.linesColor = getColorFromHexStr(lineColor.value);
+  }
 
   switch (axisToMove.value.toLowerCase()) {
     case "x":
@@ -204,7 +233,7 @@ img {
           <label><input type="checkbox" v-model="useQuantization">Cell Shading</label>
         </span>
         <span class="col-md-6">
-          <label v-show="useQuantization" ><input type="number" v-model="colorQuantity" style="max-width: 50px;">Cells</label>
+          <label v-show="useQuantization" >Cells:<input type="number" v-model="colorQuantity" step="1" max="10" min="1" style="max-width: 50px;"/></label>
         </span>
       </div>
       <br/><br/>
@@ -213,9 +242,25 @@ img {
           <label><input type="checkbox" v-model="useHatching" />Hatching</label>
         </span>
         <span class="col-md-6">
-          <label v-show="useHatching"><input type="number"  v-model="hatchingSize" style="max-width: 50px;">Size</label>
+          <label v-show="useHatching">Size:<input type="number"  v-model="hatchingSize" step="1" min="2" max="10" style="max-width: 50px;"/></label>
         </span>
       </div>
+      <br/><br/>
+      <div class="row">
+        <span class="col-md-6">
+          <label><input type="checkbox" v-model="useSobel">Outlines</label>
+        </span>
+        <span class="col-md-6">
+          <label v-show="useSobel" >Threshold:<input type="number" v-model="sobelThreshold" step="0.1" min="0.1" max="0.9" style="max-width: 50px;"/></label>
+        </span>
+      </div>
+      <br/><br/>
+      <div class="row">
+        <span class="col-md-6">
+          <label v-show="useSobel || useHatching"> Color: <input type="color" v-model="lineColor" style="max-width: 50px;"/></label>
+        </span>
+      </div>
+
     </div>
   </div>
 

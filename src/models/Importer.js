@@ -3,6 +3,38 @@ import {vec4} from "gl-matrix";
 
 export default {
 
+    fullscreenQuad: async(gl) => {
+        let scene = new Scene(gl);
+        scene.name = "Scene";
+
+        let quad = new RenderObj(gl);
+        quad.name = "FullscreenQuad";
+
+        quad._vertices.positions = [
+            -1, -1, 0,
+            1, 1, 0,
+            1, -1, 0,
+            -1, 1, 0
+        ];
+
+        quad._vertices.texCoordsLists.push([
+           0, 0,
+           1, 1,
+           1, 0,
+           0, 1
+        ]);
+
+        quad._indices = [
+            0, 1, 3,
+            0, 2, 1
+        ]
+
+        quad.loadBuffers();
+        scene.addChild(quad);
+        return scene;
+
+    },
+
     defaultTriangle: async (gl) => {
         let scene = new Scene(gl);
         scene.name = "Scene";
