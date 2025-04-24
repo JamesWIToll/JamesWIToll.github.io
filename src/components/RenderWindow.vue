@@ -3,7 +3,7 @@ import {onMounted, ref} from "vue";
 import {Shader} from "@/models/Shader.js";
 import {Renderer} from "@/models/Renderer.js";
 import importer from "@/models/Importer.js";
-import {vec3, vec4} from "gl-matrix";
+import {vec3} from "gl-matrix";
 
 const props = defineProps({model: String});
 
@@ -63,18 +63,24 @@ const loadScene = async () => {
   let vppStartPos = postProcessVertSrc.indexOf("#version");
   postProcessVertSrc = postProcessVertSrc.substring(vppStartPos, postProcessVertSrc.length);
 
-  let postProcessFragmentSrc = document.getElementById("frag-postprocess").text;
+  let postProcessFragmentSrc = document.getElementById("fragment-finalPostProcess").text;
   let fppStartPos = postProcessFragmentSrc.indexOf("#version");
   postProcessFragmentSrc = postProcessFragmentSrc.substring(fppStartPos, postProcessFragmentSrc.length);
 
+  let sobelFragmentSrc = document.getElementById("frag-sobel").text;
+  let fSobelStartPos = sobelFragmentSrc.indexOf("#version");
+  sobelFragmentSrc = sobelFragmentSrc.substring(fSobelStartPos, sobelFragmentSrc.length);
+
+  let blurFragmentSrc = document.getElementById("frag-blur").text;
+  let fBlurStartPos = blurFragmentSrc.indexOf("#version");
+  blurFragmentSrc = blurFragmentSrc.substring(fBlurStartPos, blurFragmentSrc.length);
 
 
-  let prog = new Shader(gl, vertSrc, fragSrc);
   renderer.value = new Renderer(gl);
-  renderer.value.setShaderProgram(prog);
-
-  let progPP = new Shader(gl, postProcessVertSrc, postProcessFragmentSrc);
-  renderer.value.setPostProcessProg(progPP);
+  renderer.value.shaderProg =  new Shader(gl, vertSrc, fragSrc);
+  renderer.value.postProcessProg = new Shader(gl, postProcessVertSrc, postProcessFragmentSrc);
+  renderer.value.sobelProg = new Shader(gl, postProcessVertSrc, sobelFragmentSrc);
+  renderer.value.blurProg = new Shader(gl, postProcessVertSrc, blurFragmentSrc);
 
   scene.value = (await importer.importGLTF2(currModel.value, gl));
   scene.value._transform.position = vec3.fromValues(0,-2,20);

@@ -5,8 +5,8 @@
     <link rel="icon" href="/icoicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>James Tolliver Systems Programmer</title>
-    <script type="module" crossorigin src="/assets/index-alyxfpOW.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-Y_B01SSB.css">
+    <script type="module" crossorigin src="/assets/index-OuPC0HDQ.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-BEPVJ2TX.css">
   </head>
   <body style="min-height:100%;">
     <div id="app"></div>
@@ -182,8 +182,8 @@
             color = color / (color + vec3(1.0));
             color = pow (color, vec3(1.0/2.2));
 
-            vec4 linecolor = texture(uLines1, gl_FragCoord.xy/(8.0*float(uHatchSize)) + vec2(cos(gl_FragCoord.x)*0.005, sin(gl_FragCoord.y)*0.005));
-            vec4 linecolor2 = texture(uLines2, gl_FragCoord.xy/(8.0*float(uHatchSize)) + vec2(cos(gl_FragCoord.x)*0.005, sin(gl_FragCoord.y)*0.005));
+            vec4 linecolor = texture(uLines1, gl_FragCoord.xy/(8.0*float(uHatchSize)));
+            vec4 linecolor2 = texture(uLines2, gl_FragCoord.xy/(8.0*float(uHatchSize)));
             float intensity = length(color.rgb);
 
             if (uQuantizeColors){
@@ -232,10 +232,10 @@
         }
     </script>
 
-    <script type="x-shader/x-fragment" id="frag-postprocess">
+    <script type="x-shader/x-fragment" id="frag-sobel">
         #version 300 es
         precision mediump float;
-        out vec4 FragColor;
+        out vec4 LinesColor;
 
         in vec2 TexCoord;
 
@@ -243,9 +243,7 @@
         uniform sampler2D uNormalTex;
         uniform sampler2D uLinesTex;
 
-        uniform bool uSobelLines;
         uniform float uSobelThreshold;
-        uniform vec3 uLineColor;
 
         const mat3 sobelX = mat3(
             vec3(1,0,-1),
@@ -283,19 +281,83 @@
         }
 
         void main() {
-            vec4 baseScreenColor = texture(uScreenTex, TexCoord.xy);
-            vec4 baseNormalColor = texture(uNormalTex, TexCoord.xy);
-            vec4 baseLineColor = texture(uLinesTex, TexCoord.xy);
-            vec4 result = baseScreenColor;
+            vec4 result = vec4(0);
+            vec4 lineColor = texture(uLinesTex, TexCoord.xy);
 
-            if (uSobelLines){
-                float sobel = getSobel();
-                if (sobel > uSobelThreshold){
-                    result = vec4(uLineColor*sobel, 1.0);
+            float sobel = getSobel();
+            if (sobel > uSobelThreshold){
+                result = vec4(1);
+            }
+
+            LinesColor = mix(result, vec4(1), lineColor.w);
+        }
+    </script>
+
+    <script type="x-shader/x-fragment" id="frag-blur">
+        #version 300 es
+        precision mediump float;
+        out vec4 BlurredColor;
+
+        in vec2 TexCoord;
+
+        uniform sampler2D uScreenTex;
+
+        //gaussian 3x3 matrix (from learnopengl)
+        float blurKernel[] = float[](
+            1.0, 2.0, 1.0,
+            2.0, 4.0, 2.0,
+            1.0, 2.0, 1.0
+        );
+
+        //gaussian 7x7 matrix (from wikipedia)
+//        float blurKernel[] = float[](
+//            0.00000067, 0.00002292, 0.00019117, 0.00038771, 0.00019117, 0.00002292, 0.00000067,
+//            0.00002292, 0.00078633, 0.00655965, 0.01330373, 0.00655965, 0.00078633, 0.00002292,
+//            0.00019117, 0.00655965, 0.05472157, 0.11098164, 0.05472157, 0.00655965, 0.00019117,
+//            0.00038771, 0.01330373, 0.11098164, 0.22508352, 0.11098164, 0.01330373, 0.00038771,
+//            0.00019117, 0.00655965, 0.05472157, 0.11098164, 0.05472157, 0.00655965, 0.00019117,
+//            0.00002292, 0.00078633, 0.00655965, 0.01330373, 0.00655965, 0.00078633, 0.00002292,
+//            0.00000067, 0.00002292, 0.00019117, 0.00038771, 0.00019117, 0.00002292, 0.00000067
+//        );
+
+        vec4 getBlur() {
+            vec4 result = vec4(0);
+            float denom = 0.0;
+
+            for (int i = 0; i < int(sqrt(float(blurKernel.length()))); i++) {
+                for (int j = 0; j < int(sqrt(float(blurKernel.length()))); j++) {
+                    vec4 pixel = texelFetch(uScreenTex, ivec2(int(gl_FragCoord.x), int(gl_FragCoord.y)) + ivec2(i-1,j-1), 0);
+                    result += blurKernel[i+j] * pixel;
+                    denom += blurKernel[i+j];
                 }
             }
 
-            FragColor = mix(result, vec4(uLineColor, 1), baseLineColor.w);
+            return result/denom;
+        }
+
+        void main(){
+            BlurredColor = getBlur();
+        }
+    </script>
+
+    <script type="x-shader/x-fragment" id="fragment-finalPostProcess">
+        #version 300 es
+        precision mediump float;
+        out vec4 FragColor;
+
+        in vec2 TexCoord;
+
+        uniform sampler2D uScreenTex;
+        uniform sampler2D uNormalTex;
+        uniform sampler2D uLinesTex;
+
+        uniform vec3 uLineColor;
+
+        void main(){
+            vec4 screenColor = texture(uScreenTex, TexCoord.xy);
+            vec4 lines = texture(uLinesTex, TexCoord.xy + vec2(cos(gl_FragCoord.x)*0.0005, cos(gl_FragCoord.y)*0.0005));
+
+            FragColor = mix(screenColor, vec4(uLineColor, 1.0), lines.w);
         }
 
     </script>
