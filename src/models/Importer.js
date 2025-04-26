@@ -3,6 +3,65 @@ import {vec4} from "gl-matrix";
 
 export default {
 
+    defaultCube: async(gl) => {
+        let scene = new Scene(gl);
+        scene.name = "Scene";
+
+        let cube = new RenderObj(gl);
+        cube.name = "Cube";
+
+        cube._vertices.positions = [
+            // Front face
+            -1, -1, 1,  // 0
+            1, -1, 1,   // 1
+            1, 1, 1,    // 2
+            -1, 1, 1,   // 3
+            // Back face
+            -1, -1, -1, // 4
+            -1, 1, -1,  // 5
+            1, 1, -1,   // 6
+            1, -1, -1,  // 7
+        ];
+
+        cube._vertices.colors = [
+            1, 1, 1, 1,  // 0
+            1, 1, 1, 1,   // 1
+            1, 1, 1, 1,   // 2
+            1, 1, 1, 1,   // 3
+
+            1, 1, 1, 1, // 4
+            1, 1, 1, 1,  // 5
+            1, 1, 1, 1,   // 6
+            1, 1, 1, 1 // 7
+        ]
+
+        cube._indices = [
+            // Front
+            0, 1, 2,
+            0, 2, 3,
+            // Right
+            1, 7, 6,
+            1, 6, 2,
+            // Back
+            7, 4, 5,
+            7, 5, 6,
+            // Left
+            4, 0, 3,
+            4, 3, 5,
+            // Top
+            3, 2, 6,
+            3, 6, 5,
+            // Bottom
+            4, 7, 1,
+            4, 1, 0
+        ];
+
+        cube.loadBuffers();
+        scene.addChild(cube);
+        return scene;
+
+    },
+
     fullscreenQuad: async(gl) => {
         let scene = new Scene(gl);
         scene.name = "Scene";
@@ -319,8 +378,11 @@ export default {
             });
             buffer = new DataView(bin);
 
-            scene = loadNode(data["scenes"][data["scene"]])
+            scene = loadNode(data["scenes"][data["scene"]]);
 
+            scene.skins = data["skins"];
+            scene.animations = data["animations"];
+            debugger;
         });
         return scene;
 

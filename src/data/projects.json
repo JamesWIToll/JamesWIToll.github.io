@@ -19,13 +19,13 @@
       "image": "/glengine.png"
     },
     {
-      "title": "RevvEngine",
+      "title": "This Website",
       "group": "Sole Developer",
-      "timespan": "Jan 2025 - present",
-      "link": "https://github.com/JamesWIToll/RevvEngine",
-      "description" : "A work in progress 3D racing game engine that I am using to document and show off my process learning the OpenGL 4.6 API. Right now I am working purely on the 3D asset import to rendering pipeline. I have plans to create an editor and possibly integrate a game logic scripting system much later on. ",
-      "skills": ["C++", "OpenGL", "GLSL", "SFML", "Clion", "Cmake"],
-      "image": "/revvengine.png"
+      "timespan": "Spring 2025 - present",
+      "link": "https://github.com/JamesWIToll/JamesWIToll.github.io",
+      "description" : "This website shows off both my experience with web development as well as my progress learning graphics programming using the WebGL 2.0 graphics API. The 3D viewer on this site uses various techniques to create both realistic and stylized images from 3D models.",
+      "skills": ["JS", "WebGL 2.0", "GLSL", "Vue JS", "HTML", "CSS", "WebStorm"],
+      "image": "/this_site.png"
     },
     {
       "title": "TestFantasyGame",

@@ -5,7 +5,7 @@
     <link rel="icon" href="/icoicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>James Tolliver Systems Programmer</title>
-    <script type="module" crossorigin src="/assets/index-OuPC0HDQ.js"></script>
+    <script type="module" crossorigin src="/assets/index-RmSJeIXP.js"></script>
     <link rel="stylesheet" crossorigin href="/assets/index-BEPVJ2TX.css">
   </head>
   <body style="min-height:100%;">
@@ -36,7 +36,7 @@
         void main() {
             gl_Position = uProjection * uView * uModel * vec4(aPos, 1.0f);
             TexCoords =  vec2[](aTex0, aTex1, aTex2, aTex3, aTex4);
-            Normal = aNormal;
+            Normal = mat3(transpose(inverse(uModel))) * aNormal;
             Color =  aColor;
             WorldPos = vec3((uModel * vec4(aPos, 1.0f)).xyz);
         }

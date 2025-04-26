@@ -206,7 +206,7 @@ export class RenderObj extends Node {
         this.material = {
             "pbrMetallicRoughness": {
                 "baseColorTexture": null,
-                "baseColorFactor": vec4.fromValues(0.9,0.8,0.2,1.0)
+                "baseColorFactor": vec4.fromValues(1.0,1.0,1.0,1.0)
             }
         };
 
@@ -263,10 +263,14 @@ export class RenderObj extends Node {
                 return;
             }
 
-
             let model = this.getModelMatrix();
             shader.setMat4("uModel", model);
-            shader.setVec4("uBaseColor", this.material.pbrMetallicRoughness.baseColorFactor)
+
+            if (this.material.pbrMetallicRoughness.baseColorFactor != null) {
+                shader.setVec4("uBaseColor", this.material.pbrMetallicRoughness.baseColorFactor)
+            } else {
+                shader.setVec4("uBaseColor", vec4.fromValues(1,1,1,1))
+            }
 
             if (this.material.pbrMetallicRoughness.baseColorTexture != null) {
                 this.gl.activeTexture(this.gl.TEXTURE0);

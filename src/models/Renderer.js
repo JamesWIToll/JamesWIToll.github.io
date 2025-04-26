@@ -174,6 +174,8 @@ export class Renderer {
 
         this.render = async () => {
 
+            let lightpos = vec3.fromValues(5,5,20);
+
             this.setupClearColor();
 
             this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, this.frameBuffer);
@@ -187,7 +189,7 @@ export class Renderer {
             this.shaderProg.setMat4("uView", this.camera.getViewMatrix())
             this.shaderProg.setMat4("uProjection", this.camera.getProjectionMatrix(this.gl.canvas.width, this.gl.canvas.height));
             this.shaderProg.setVec3("uLights[0].color", vec3.fromValues(255, 255, 255));
-            this.shaderProg.setVec3("uLights[0].posDir", vec3.fromValues(5,5,20));
+            this.shaderProg.setVec3("uLights[0].posDir", lightpos);
 
             this.gl.activeTexture(this.gl.TEXTURE1);
             this.gl.bindTexture(this.gl.TEXTURE_2D, this.lineTex1);
@@ -210,6 +212,12 @@ export class Renderer {
             this.transparentQueue.sort(this.sortTransparent);
 
             this.renderTransparent();
+
+
+            // let lightBox = await importer.defaultCube(this.gl);
+            // lightBox._transform.position = lightpos;
+            // lightBox.render(this);
+
 
             //post-processing
             this.gl.disable(this.gl.DEPTH_TEST);

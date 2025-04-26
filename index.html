@@ -35,7 +35,7 @@
         void main() {
             gl_Position = uProjection * uView * uModel * vec4(aPos, 1.0f);
             TexCoords =  vec2[](aTex0, aTex1, aTex2, aTex3, aTex4);
-            Normal = aNormal;
+            Normal = mat3(transpose(inverse(uModel))) * aNormal;
             Color =  aColor;
             WorldPos = vec3((uModel * vec4(aPos, 1.0f)).xyz);
         }
