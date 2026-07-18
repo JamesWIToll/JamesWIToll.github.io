@@ -3,4 +3,21 @@
 
 body {
     background: white;
+    font-family: "Geomini", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    color: #030005;
+
+    .site-container {
+        padding-top: 50px;
+
+        @media (max-width: 768px) {
+            padding-top:10px;
+        }
+
+        @media (max-width: 576px) {
+            padding-top:0;
+        }
+    }
 }

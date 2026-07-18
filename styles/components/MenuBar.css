@@ -1,0 +1,16 @@
+﻿
+#menu-bar {
+    background-color: #C0DDD2;
+    padding: 50px 10px 30px 30px;
+    border-radius: 3px;
+
+    .menu-title {
+        font-weight: 700;
+        font-size: 20px;
+    }
+
+    .menu-subtitle {
+        font-weight: 500;
+        font-size: 15px;
+    }
+}
