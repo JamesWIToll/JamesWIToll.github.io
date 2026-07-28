@@ -6,17 +6,25 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Geomini:wght@200..800&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles/index.css"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <base href="."/>
+    <link rel="stylesheet" href="./styles/index.css"/>
 </head>
 
-<script type="module" src="./dist/index.js"></script>
+<script type="module" src="./node_modules/jquery/dist/jquery.min.js"></script>
+<script type="module" src="./dist/index.js"> </script>
 
 <body>
     <div class="container">
         <div class="row site-container">
             <div id="menu-bar" class="col-12 col-md-4 col-lg-3">
                 <div class="row">
-                    <div class="col-8 col-md-12">
+
+                    <div class="col-3 col-md-12 menu-img-holder">
+                        <img class="menu-img" src="resources/images/headshot.jpg" alt="picture of James Tolliver"/>
+                    </div>
+
+                    <div class="col-4 col-md-12 text-md-center">
                         <p class="menu-title">
                             James Tolliver
                         </p>
@@ -25,14 +33,59 @@
                         </p>
                     </div>
 
-                    <div id="menu-list" class="col-4 col-md-12">
+                    <div id="menu-list" class="col-5 col-md-12">
+                        <div id="menu-list-content" class="row">
+
+                        </div>
                     </div>
                 </div>
 
             </div>
 
-            <div id="main-content" class="col-12 col-md-8 col-lg-9">
-
+            <div id="main-content" class="col-12 col-md-8 col-lg-9 pt-5 pt-md-3">
+                <div id="about-page-content">
+                    <p class="main-title">About me</p>
+                    <div class="row about-content mt-5">
+                        <div class="col-12 col-lg-4 ps-3">
+                            <p class="intro-title">
+                                Hi, I'm James Tolliver!
+                            </p>
+                            <p>
+                                I'm a system programmer with more than 4 years of professional experience in developing
+                                and maintaining large scale legacy codebases. I have simultaneously worked across multiple
+                                projects and tech-stacks to support various research efforts at RTI International. I
+                                spend much of my free time working on low level cross-platform app development, often
+                                employing C++ and OpenGL. When I have time, I try to join game jams with
+                                my friends. Some of my favorite projects have been game jams - the time crunch and creative
+                                constraints push us to our limits and brings out the best in the whole team.
+                            </p>
+                        </div>
+                        <div class="col-12 col-lg-8 side-img-holder">
+                            <img class="side-img" src="resources/images/selfie-montreal.jpg" alt="picture of James Tolliver with fiance in Montreal"/>
+                        </div>
+                        <div class="col-12 ps-3 pt-5" style="padding-right: 75px;">
+                            <p>
+                                When I'm not writing software, I love to play RPGs with my friends, play a lot of different
+                                video games (and try to figure out how they work), travel (see picture of my partner and I
+                                in Montreal above), and most importantly spend quality time with my loving fiancé. Work-life
+                                balance is an important part of a healthy life, and I believe that my time with my friends and
+                                family makes me all the more dedicated to my work.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div id="career-page-content">
+                    <p class="main-title">Career</p>
+                    <p>under construction</p>
+                </div>
+                <div id="projects-page-content">
+                    <p class="main-title">Projects</p>
+                    <p>under construction</p>
+                </div>
+                <div id="resume-page-content">
+                    <p class="main-title">Resume</p>
+                    <p>under construction</p>
+                </div>
             </div>
         </div>
     </div>
