@@ -53,6 +53,18 @@ body {
             height: 0 !important;
             width: 0 !important;
         }
+
+        .resume-content-box {
+            text-align: end;
+            align-items: end;
+            justify-content: end;
+        }
+
+        .link-logo {
+            width: 30px;
+            height: 30px;
+            margin-left: 20px;
+        }
         
         .main-title {
             font-size: 32px;
@@ -109,8 +121,12 @@ body {
         background-image: linear-gradient(to bottom, #E3F1F0, #00000000);
         border-radius: 30px;
 
+        @media (max-width: 1400px) {
+            width: 900px;
+        }
+
         @media (max-width: 1200px) {
-            width: 750px;
+            width: 800px;
         }
 
         @media (max-width: 992px) {
@@ -119,9 +135,9 @@ body {
 
         @media (max-width: 768px) {
             margin-left: -10px;
-            top: 210px;
+            top: 250px;
             margin-right: 20px;
-            width: 550px;
+            width: 535px;
         }
 
         @media (max-width: 576px) {

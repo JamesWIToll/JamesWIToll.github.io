@@ -10,9 +10,15 @@
         border-radius: 10px;
     }
 
+    @media (max-width: 576px) {
+        text-align: end;
+    }
+
     .menu-title {
         font-weight: 700;
         font-size: 20px;
+
+
     }
 
     .menu-subtitle {
@@ -47,8 +53,9 @@
 
 
     #menu-list-content {
-        padding-left: 15px;
-        padding-top: 15px;
+        padding-top: 20px;
+        margin-left: auto;
+        max-width: 200px;
 
         .row {
             margin-bottom: 20px;
