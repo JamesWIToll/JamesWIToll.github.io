@@ -2,6 +2,7 @@ let viewportWidth = window.innerWidth;
 export class MenuBar {
     constructor(page) {
         this.menuItems = new Map();
+        console.log("here");
         this.page = page;
         this.updateContent();
     }

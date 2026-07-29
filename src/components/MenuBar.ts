@@ -8,6 +8,7 @@ export class MenuBar  {
     page: Page;
 
     constructor(page: Page) {
+        console.log("here");
         this.page = page;
         this.updateContent();
     }

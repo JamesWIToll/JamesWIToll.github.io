@@ -7,5 +7,4 @@ let page: Page = new Page([
     new PageContent("career", "Career History", "#career-page-content"),
     new PageContent("projects", "My Projects", "#projects-page-content"),
     new PageContent("resume", "Resume", "#resume-page-content"),
-
 ]);
