@@ -21,6 +21,45 @@ body {
             padding-top:0;
         }
     }
+
+    .list-item {
+        margin-top: 100px;
+
+        .list-item-title {
+            font-weight: 600;
+            font-size: 18px;
+            padding-bottom: 10px;
+
+            @media (min-width: 992px) {
+                text-align: right;
+                padding-right: 50px;
+            }
+        }
+
+        .list-item-content {
+            align-content: center;
+
+            @media (min-width: 1200px) {
+                text-align: right;
+                padding-right: 50px;
+            }
+        }
+
+        .list-item-image-holder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            .list-item-image {
+                margin-right: auto;
+                margin-left: auto;
+                max-width: 100%;
+                max-height: 200px;
+            }
+        }
+
+    }
+
     
     #main-content {
 
